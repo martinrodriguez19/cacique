@@ -8,7 +8,7 @@ import Footer from "./components/Footer";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "El Cacique - Corralón y Ferretería",
+  title: "El Cacique - Corralón",
   description: "Materiales de construcción, ferretería y todo para tu obra en Vicente López. Envíos rápidos a CABA y zona norte.",
 };
 
