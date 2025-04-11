@@ -47,8 +47,7 @@ export default function AboutUs() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
           <h3 className="text-2xl font-semibold mb-4">
-            Más de 20 Años de Experiencia
-          </h3>
+Empresa          </h3>
           <p className="text-gray-600 mb-6">
             En El Cacique nos dedicamos a proveer materiales de construcción y 
             ferretería de alta calidad para profesionales y particulares. 
