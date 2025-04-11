@@ -20,7 +20,7 @@ export default function EmpresaPage() {
                 Nuestra Empresa
               </h1>
               <p className="text-xl text-white/90 max-w-2xl">
-                Conoce la historia y valores de El Cacique Corralón y Ferretería
+                Conoce la historia y valores de El Cacique Corralón
               </p>
             </div>
           </div>
@@ -31,15 +31,9 @@ export default function EmpresaPage() {
           <div>
             <h2 className="text-3xl font-semibold mb-6">Nuestra Historia</h2>
             <p className="text-gray-600 mb-4">
-              El Cacique nace en el año 2000 como un pequeño negocio familiar en Vicente López, 
-              con el objetivo de proveer materiales de construcción de calidad a precios accesibles.
+      
               Con el paso de los años, nos hemos consolidado como uno de los corralones de referencia 
               en la zona norte de Buenos Aires.
-            </p>
-            <p className="text-gray-600 mb-4">
-              Lo que comenzó como un emprendimiento modesto, hoy se ha transformado en una empresa 
-              con amplia experiencia en el rubro, manteniendo siempre los valores de honestidad, 
-              calidad y servicio que nos caracterizaron desde el primer día.
             </p>
             <p className="text-gray-600">
               Actualmente, contamos con un equipo de profesionales capacitados, una flota de vehículos 

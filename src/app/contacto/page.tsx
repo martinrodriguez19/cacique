@@ -57,7 +57,7 @@ export default function ContactoPage() {
   };
 
   return (
-    <div className="pt-24 pb-16">
+    <div className="pt-36 pb-16">
       <div className="container-custom">
         {/* Hero Section */}
         <div className="text-center mb-12">
