@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/app/lib/mongoose';
 import Category from '@/app/lib/models/Category';
 import { auth } from '@/app/lib/auth';
-
+export const maxDuration = 30;
 // GET: Fetch all categories
 export async function GET(request: Request) {
   try {

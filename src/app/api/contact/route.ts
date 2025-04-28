@@ -5,7 +5,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/app/lib/mongoose';
 import Contact from '@/app/lib/models/Contact';
-
+export const maxDuration = 30;
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

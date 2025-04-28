@@ -8,7 +8,7 @@ import Category from '@/app/lib/models/Category';
 interface Params {
   params: { id: string };
 }
-
+export const maxDuration = 30;
 // GET: Fetch a single category by ID
 export async function GET(request: Request, { params }: Params) {
   try {

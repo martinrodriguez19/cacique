@@ -5,7 +5,7 @@
 // src/app/api/cloudinary/signature/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
-
+export const maxDuration = 30;
 export async function GET(request: NextRequest) {
   try {
     const timestamp = Math.round(new Date().getTime() / 1000);

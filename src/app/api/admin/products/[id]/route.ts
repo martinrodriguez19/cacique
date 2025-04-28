@@ -9,7 +9,7 @@ import { auth } from '@/app/lib/auth';
 interface Params {
   params: { id: string };
 }
-
+export const maxDuration = 30;
 // GET: Fetch a single product by ID
 export async function GET(request: Request, { params }: Params) {
   try {

@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/app/lib/mongoose';
 import Product from '@/app/lib/models/Product';
 import { auth } from '@/app/lib/auth';
-
+export const maxDuration = 30;
 // GET: Fetch all products
 export async function GET(request: Request) {
   try {
