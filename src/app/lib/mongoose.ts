@@ -13,11 +13,8 @@ export const connectToDatabase = async () => {
     try {
         await mongoose.connect(process.env.MONGODB_URL,{
             dbName:'ELCACIQUE',
-            bufferCommands: false,
-            serverSelectionTimeoutMS: 10000,  // Aumenta a 10 segundos
-            socketTimeoutMS: 30000,           // Aumenta a 30 segundos
-            connectTimeoutMS: 10000,          // Aumenta a 10 segundos
-            maxPoolSize: 10,                  // Limita el pool de conexiones
+            bufferCommands: true, // Cambiado a true para permitir comandos mientras se conecta
+
         })
         isConnected = true 
         console.log('MongoDB connected')
