@@ -10,7 +10,7 @@ import { getProducts } from './products/actions';
 import { getCategories } from './categories/actions';
 import { getContactCounts } from './inquiries/actions';
 import { getJobApplicationCounts } from './job-applications/actions';
-
+export const maxDuration = 30;
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
     products: 0,

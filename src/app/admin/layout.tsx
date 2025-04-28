@@ -5,7 +5,7 @@ import AdminSidebar from '@/app/admin/components/AdminSidebar';
 import { Toaster } from 'react-hot-toast';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-
+export const maxDuration = 30;
 export const metadata: Metadata = {
   title: 'Panel de Administración - El Cacique',
   description: 'Panel de administración para El Cacique Corralón y Ferretería',
