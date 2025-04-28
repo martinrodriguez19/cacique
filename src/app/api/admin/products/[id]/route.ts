@@ -4,7 +4,6 @@ import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import { connectToDatabase } from '@/app/lib/mongoose';
 import Product from '@/app/lib/models/Product';
-import { auth } from '@/app/lib/auth';
 
 interface Params {
   params: { id: string };
@@ -45,14 +44,7 @@ export async function GET(request: Request, { params }: Params) {
 // PUT: Update a product by ID
 export async function PUT(request: Request, { params }: Params) {
   try {
-    // Check authentication
-    const session = await auth();
-    if (!session) {
-      return NextResponse.json(
-        { success: false, message: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
+
 
     const { id } = params;
     const data = await request.json();
@@ -97,13 +89,7 @@ export async function PUT(request: Request, { params }: Params) {
 export async function DELETE(request: Request, { params }: Params) {
   try {
     // Check authentication
-    const session = await auth();
-    if (!session) {
-      return NextResponse.json(
-        { success: false, message: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
+
 
     const { id } = params;
     

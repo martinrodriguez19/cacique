@@ -2,7 +2,6 @@
 import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import { connectToDatabase } from '@/app/lib/mongoose';
-import { auth } from '@/app/lib/auth';
 import Category from '@/app/lib/models/Category';
 
 interface Params {
@@ -45,13 +44,7 @@ export async function GET(request: Request, { params }: Params) {
 export async function PUT(request: Request, { params }: Params) {
   try {
     // Check authentication
-    const session = await auth();
-    if (!session) {
-      return NextResponse.json(
-        { success: false, message: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
+
 
     const { id } = params;
     const data = await request.json();
@@ -95,14 +88,7 @@ export async function PUT(request: Request, { params }: Params) {
 // DELETE: Remove a category by ID
 export async function DELETE(request: Request, { params }: Params) {
   try {
-    // Check authentication
-    const session = await auth();
-    if (!session) {
-      return NextResponse.json(
-        { success: false, message: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
+
 
     const { id } = params;
     

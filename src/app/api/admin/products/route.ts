@@ -3,7 +3,6 @@ import { NextResponse } from 'next/server';
 
 import { connectToDatabase } from '@/app/lib/mongoose';
 import Product from '@/app/lib/models/Product';
-import { auth } from '@/app/lib/auth';
 export const maxDuration = 30;
 // GET: Fetch all products
 export async function GET(request: Request) {
@@ -32,14 +31,6 @@ export async function GET(request: Request) {
 // POST: Create a new product
 export async function POST(request: Request) {
   try {
-    // Check authentication
-    const session = await auth();
-    if (!session) {
-      return NextResponse.json(
-        { success: false, message: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
 
     const data = await request.json();
     await connectToDatabase();
