@@ -8,10 +8,14 @@ import ServicesSection from "./components/home/ServicesSection";
 import QuoteForm from "./components/home/QuoteForm";
 import FeaturedMaterials from "./components/home/FeaturedMaterials";
 import AboutUs from "./components/home/AboutUs";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 export default function Home() {
   return (
     <div className="pt-16">
+              <Navbar />
+      
       {/* Hero Section */}
       <Suspense fallback={<div className="h-[600px] bg-gray-100"></div>}>
         <HeroSection />
@@ -65,6 +69,7 @@ export default function Home() {
           <AboutUs />
         </div>
       </section>
+      <Footer />
     </div>
   );
 }

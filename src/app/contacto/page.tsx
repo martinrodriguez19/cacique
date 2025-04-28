@@ -3,6 +3,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 type ContactFormData = {
   name: string;
@@ -42,15 +44,33 @@ export default function ContactoPage() {
     setSubmitError("");
 
     try {
-      // Simulate API call with timeout
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Enviar datos a la API de contacto
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          projectType: formData.subject // Utilizamos el asunto como tipo de proyecto
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Error al enviar el formulario');
+      }
       
       // Reset form after successful submission
       setFormData(initialFormData);
       setSubmitSuccess(true);
       setTimeout(() => setSubmitSuccess(false), 5000);
-    } catch (error) {
-      setSubmitError("Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.");
+    } catch (error: any) {
+      setSubmitError(error.message || "Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.");
     } finally {
       setIsSubmitting(false);
     }
@@ -58,6 +78,7 @@ export default function ContactoPage() {
 
   return (
     <div className="pt-36 pb-16">
+      <Navbar />
       <div className="container-custom">
         {/* Hero Section */}
         <div className="text-center mb-12">
@@ -282,12 +303,13 @@ export default function ContactoPage() {
                     htmlFor="phone"
                     className="block text-sm font-medium text-gray-700 mb-1"
                   >
-                    Teléfono
+                    Teléfono <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="tel"
                     id="phone"
                     name="phone"
+                    required
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#e32929] focus:border-[#e32929] outline-none transition-colors"
                     placeholder="(011) XXXX-XXXX"
                     value={formData.phone}
@@ -437,6 +459,7 @@ export default function ContactoPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

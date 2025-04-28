@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-
+import WhatsAppButton from "./components/WhatsAppButton";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "El Cacique - Corralón",
+  title: "El Cacique - Corralón y Ferretería",
   description: "Materiales de construcción, ferretería y todo para tu obra en Vicente López. Envíos rápidos a CABA y zona norte.",
 };
 
@@ -20,9 +19,8 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${inter.variable} font-sans bg-white`}>
-        <Navbar />
         <main>{children}</main>
-        <Footer />
+        <WhatsAppButton />
       </body>
     </html>
   );

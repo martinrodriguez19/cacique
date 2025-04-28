@@ -3,10 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import QuoteForm from "../components/home/QuoteForm";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 export default function CotizaPage() {
   return (
     <div className="pt-36 pb-16">
+      <Navbar />
       <div className="container-custom">
         {/* Hero Section */}
         <div className="text-center mb-12">
@@ -309,6 +312,7 @@ export default function CotizaPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

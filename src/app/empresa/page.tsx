@@ -1,8 +1,11 @@
 import Image from "next/image";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 export default function EmpresaPage() {
   return (
     <div className="pt-24 pb-16">
+      <Navbar />
       <div className="container-custom">
         {/* Hero Section */}
         <div className="relative mb-16 overflow-hidden rounded-xl">
@@ -255,6 +258,7 @@ export default function EmpresaPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

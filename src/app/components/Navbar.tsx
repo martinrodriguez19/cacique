@@ -9,6 +9,7 @@ import Logo from "../../../public/images/logo1.png";
 const productCategories = [
   { name: "Obra Gruesa", href: "/productos/obra-gruesa" },
   { name: "Ferretería", href: "/productos/ferreteria" },
+  { name: "Construcción en Seco", href: "/productos/construccion-seco" }, // Reemplazado "Herramientas Eléctricas"
   // Space for more categories as mentioned
 ];
 
@@ -46,15 +47,19 @@ export default function Navbar() {
       }`}
     >
       <div className="container-custom flex items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="relative z-10">
+        {/* Logo with title and tagline */}
+        <Link href="/" className="relative z-10 flex items-center">
           <Image
             src={Logo}
             alt="El Cacique"
-            width={250}
-            height={250}
-            className="h-20 w-auto object-contain"
+            width={150}
+            height={150}
+            className="h-16 w-auto mr-3 object-contain"
           />
+          <div className="flex flex-col">
+            <h1 className="text-xl md:text-2xl font-bold text-gray-800">El Cacique</h1>
+            <span className="text-gray-700 font-medium text-sm">Corralón y Ferretería</span>
+          </div>
         </Link>
 
         {/* Desktop Menu */}
@@ -138,6 +143,14 @@ export default function Navbar() {
           >
             Contacto
           </Link>
+          <Link
+            href="/trabaja-con-nosotros"
+            className={`font-medium hover:text-[#e32929] transition-colors ${
+              pathname === "/trabaja-con-nosotros" ? "text-[#e32929]" : "text-gray-800"
+            }`}
+          >
+            Trabaja con Nosotros
+          </Link>
         </div>
 
         {/* Mobile menu button */}
@@ -169,7 +182,7 @@ export default function Navbar() {
             mobileMenuOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          <div className="flex flex-col space-y-4 pt-24 px-6">
+          <div className="flex flex-col bg-white  space-y-4 pt-24 px-6">
             <Link
               href="/"
               className={`text-lg font-medium py-2 border-b border-gray-100 ${
@@ -250,6 +263,15 @@ export default function Navbar() {
               onClick={toggleMobileMenu}
             >
               Contacto
+            </Link>
+            <Link
+              href="/trabaja-con-nosotros"
+              className={`text-lg font-medium py-2 border-b border-gray-100 ${
+                pathname === "/trabaja-con-nosotros" ? "text-[#e32929]" : "text-gray-800"
+              }`}
+              onClick={toggleMobileMenu}
+            >
+              Trabaja con Nosotros
             </Link>
           </div>
         </div>

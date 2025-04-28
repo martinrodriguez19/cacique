@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
 type FormData = {
   name: string;
@@ -13,11 +12,11 @@ type FormData = {
 };
 
 const initialFormData: FormData = {
-  name: "",
-  email: "",
-  phone: "",
-  projectType: "",
-  message: "",
+  name: '',
+  email: '',
+  phone: '',
+  projectType: '',
+  message: '',
   terms: false,
 };
 
@@ -25,7 +24,7 @@ export default function QuoteForm() {
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [submitError, setSubmitError] = useState("");
+  const [submitError, setSubmitError] = useState('');
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -37,25 +36,50 @@ export default function QuoteForm() {
 
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === 'checkbox' ? checked : value,
     });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setSubmitError("");
+    setSubmitError('');
 
     try {
-      // Simulate API call with timeout
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Validar términos y condiciones
+      if (!formData.terms) {
+        setSubmitError('Debes aceptar los términos y condiciones');
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Enviar datos a la API
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          projectType: formData.projectType,
+          message: formData.message,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Error al enviar el formulario');
+      }
       
       // Reset form after successful submission
       setFormData(initialFormData);
       setSubmitSuccess(true);
       setTimeout(() => setSubmitSuccess(false), 5000);
-    } catch (error) {
-      setSubmitError("Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.");
+    } catch (error: any) {
+      setSubmitError(error.message || 'Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.');
     } finally {
       setIsSubmitting(false);
     }

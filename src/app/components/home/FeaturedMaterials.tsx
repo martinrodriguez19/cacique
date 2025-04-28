@@ -24,11 +24,11 @@ const materials = [
   },
   {
     id: 3,
-    name: "Herramientas Eléctricas",
-    image: "/images/products/powertools.jpg",
-    description: "Herramientas de calidad para profesionales y aficionados al mejor precio.",
-    category: "ferreteria",
-    link: "/productos/ferreteria#electricas",
+    name: "Construcción en Seco", // Cambiado de "Herramientas Eléctricas"
+    image: "/images/products/drywall.jpg", // Cambiado por una imagen más apropiada
+    description: "Sistemas completos para construcción en seco: placas de yeso, perfiles, masillas y accesorios.",
+    category: "construccionSeco",
+    link: "/productos/construccion-seco",
   },
   {
     id: 4,
@@ -61,6 +61,7 @@ const categories = [
   { id: "all", name: "Todos" },
   { id: "obraGruesa", name: "Obra Gruesa" },
   { id: "ferreteria", name: "Ferretería" },
+  { id: "construccionSeco", name: "Construcción en Seco" }, // Nueva categoría
 ];
 
 export default function FeaturedMaterials() {

@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
 
 const categories = [
   {
@@ -33,6 +35,7 @@ const categories = [
 export default function ProductosPage() {
   return (
     <div className="pt-24 pb-16">
+      <Navbar />
       <div className="container-custom">
         {/* Hero Section */}
         <div className="text-center mb-16">
@@ -179,6 +182,7 @@ export default function ProductosPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

@@ -7,10 +7,10 @@ import Link from "next/link";
 
 export default function AboutUs() {
   const mapRef = useRef<HTMLDivElement>(null);
+  const careersBannerRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
-    // This could be replaced with a real map implementation
-    // like Google Maps or Mapbox in a production environment
+    // Observer para animaciones de elementos al entrar en el viewport
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -28,9 +28,16 @@ export default function AboutUs() {
       observer.observe(mapRef.current);
     }
 
+    if (careersBannerRef.current) {
+      observer.observe(careersBannerRef.current);
+    }
+
     return () => {
       if (mapRef.current) {
         observer.unobserve(mapRef.current);
+      }
+      if (careersBannerRef.current) {
+        observer.unobserve(careersBannerRef.current);
       }
     };
   }, []);
@@ -47,7 +54,8 @@ export default function AboutUs() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
           <h3 className="text-2xl font-semibold mb-4">
-Empresa          </h3>
+            Empresa
+          </h3>
           <p className="text-gray-600 mb-6">
             En El Cacique nos dedicamos a proveer materiales de construcción y 
             ferretería de alta calidad para profesionales y particulares. 
@@ -61,7 +69,6 @@ Empresa          </h3>
           </p>
           
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-
             <div className="bg-gray-50 p-4 rounded-lg text-center">
               <div className="text-3xl font-bold text-[#e32929] mb-2">5000+</div>
               <div className="text-gray-600 text-sm">
@@ -135,99 +142,55 @@ Empresa          </h3>
         </div>
       </div>
       
-      <div className="mt-16 bg-gray-50 rounded-lg p-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <h4 className="font-semibold text-lg mb-3">Horario de Atención</h4>
-            <ul className="space-y-2 text-gray-600">
-              <li className="flex justify-between">
-                <span>Lunes a Viernes:</span>
-                <span>8:00 - 18:00</span>
-              </li>
-              <li className="flex justify-between">
-                <span>Sábados:</span>
-                <span>8:00 - 13:00</span>
-              </li>
-              <li className="flex justify-between">
-                <span>Domingos:</span>
-                <span>Cerrado</span>
-              </li>
-            </ul>
+      {/* Trabaja con Nosotros Banner */}
+      <div 
+        ref={careersBannerRef} 
+        className="mt-16 mb-16 bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg overflow-hidden shadow-lg opacity-0"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          <div className="p-8 md:p-10 lg:p-12 flex flex-col justify-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+              Trabaja con Nosotros
+            </h2>
+            <p className="text-gray-300 mb-6">
+              ¿Te gustaría formar parte de nuestro equipo? En El Cacique buscamos 
+              personas comprometidas y apasionadas por el servicio. Envíanos tu CV 
+              y forma parte de una empresa en constante crecimiento.
+            </p>
+            <div>
+              <Link 
+                href="/trabaja-con-nosotros"
+                className="inline-flex items-center px-6 py-3 bg-[#e32929] hover:bg-[#c81e1e] text-white rounded-md transition-colors font-medium"
+              >
+                Enviar mi CV
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="h-5 w-5 ml-2" 
+                  viewBox="0 0 20 20" 
+                  fill="currentColor"
+                >
+                  <path 
+                    fillRule="evenodd" 
+                    d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" 
+                    clipRule="evenodd" 
+                  />
+                </svg>
+              </Link>
+            </div>
           </div>
-          
-          <div>
-            <h4 className="font-semibold text-lg mb-3">Contacto</h4>
-            <ul className="space-y-2 text-gray-600">
-              <li className="flex items-center">
-                <svg
-                  className="w-4 h-4 text-[#e32929] mr-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                  />
-                </svg>
-                <span>(011) 4000-0000</span>
-              </li>
-              <li className="flex items-center">
-                <svg
-                  className="w-4 h-4 text-[#e32929] mr-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                  />
-                </svg>
-                <span>info@elcacique.com.ar</span>
-              </li>
-              <li className="flex items-center">
-                <svg
-                  className="w-4 h-4 text-[#e32929] mr-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                </svg>
-                <span>Av. Ejemplo 1234, Vicente López</span>
-              </li>
-            </ul>
-          </div>
-          
-          <div>
-            <h4 className="font-semibold text-lg mb-3">Zonas de Entrega</h4>
-            <ul className="space-y-1 text-gray-600">
-              <li>• Vicente López</li>
-              <li>• San Isidro</li>
-              <li>• Olivos</li>
-              <li>• CABA</li>
-              <li>• Zona Norte GBA</li>
-              <li>• Consultar por otras zonas</li>
-            </ul>
+          <div className="relative h-64 md:h-auto">
+            <div className="absolute inset-0 bg-gradient-to-r from-gray-900/60 to-transparent z-10"></div>
+            <Image
+              src="/images/careers.jpg" 
+              alt="Trabaja con nosotros"
+              fill
+              className="object-cover"
+            />
           </div>
         </div>
       </div>
+      
+     
     </div>
   );
 }

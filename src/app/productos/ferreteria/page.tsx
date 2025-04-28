@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Navbar from "@/app/components/Navbar";
+import Footer from "@/app/components/Footer";
 
 // Mock products data
 const products = [
@@ -117,6 +119,7 @@ export default function FerreteriaPage() {
 
   return (
     <div className="pt-24 pb-16">
+      <Navbar />
       <div className="container-custom">
         {/* Hero Section */}
         <div className="relative mb-12 overflow-hidden rounded-xl">
@@ -320,6 +323,7 @@ export default function FerreteriaPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
