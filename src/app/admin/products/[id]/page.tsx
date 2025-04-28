@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-nocheck
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -12,7 +10,6 @@ import { getCategories } from '../../categories/actions';
 import { createProduct, getProductById, updateProduct } from '../actions';
 import CloudinaryScripts from '@/app/components/CloudinaryScripts';
 import UnsignedImageUploader from '@/app/components/ImageUploader';
-
 
 // Función para generar un slug a partir de un texto
 const generateSlug = (text: string) => {
@@ -27,10 +24,11 @@ const generateSlug = (text: string) => {
     .replace(/--+/g, '-');              // Reemplaza múltiples guiones con uno solo
 };
 
-// En Next.js 15 usamos Page Client Component para evitar el error de params
-export default function ProductFormPage({ params }: { params: { id: string } }) {
-  // Usamos una forma de acceder al id para evitar la advertencia
-  const [id, setId] = useState<string>('');
+interface ProductFormProps {
+  id: string;
+}
+
+export default function ProductForm({ id }: ProductFormProps) {
   const [isNewProduct, setIsNewProduct] = useState<boolean>(false);
   
   const router = useRouter();
@@ -54,11 +52,10 @@ export default function ProductFormPage({ params }: { params: { id: string } }) 
   // Para manejar las imágenes con Cloudinary
   const [productImages, setProductImages] = useState<string[]>([]);
 
-  // Inicializar id y isNewProduct de manera segura
+  // Inicializar isNewProduct de manera segura
   useEffect(() => {
-    setId(params.id);
-    setIsNewProduct(params.id === 'new');
-  }, [params.id]);
+    setIsNewProduct(id === 'new');
+  }, [id]);
 
   // Actualizar el slug automáticamente cuando cambia el nombre
   useEffect(() => {
@@ -71,9 +68,6 @@ export default function ProductFormPage({ params }: { params: { id: string } }) 
   }, [formData.name]);
 
   useEffect(() => {
-    // Solo cargar datos si tenemos el id
-    if (!id) return;
-    
     const fetchData = async () => {
       setLoading(true);
 
