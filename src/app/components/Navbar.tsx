@@ -9,7 +9,6 @@ import Logo from "../../../public/images/logo1.png";
 const productCategories = [
   { name: "Obra Gruesa", href: "/productos/obra-gruesa" },
   { name: "Ferretería", href: "/productos/ferreteria" },
-  { name: "Construcción en Seco", href: "/productos/construccion-seco" }, // Reemplazado "Herramientas Eléctricas"
   // Space for more categories as mentioned
 ];
 
