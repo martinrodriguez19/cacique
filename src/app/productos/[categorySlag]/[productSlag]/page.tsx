@@ -6,10 +6,9 @@
 // Página de detalle de producto con nombres de parámetros consistentes
 
 import ProductDetailPage from '@/app/components/ProductDetailPage';
-import { catalogData  } from '@/app/lib/catalog-data';
+import { catalogData, generateSlug as generateSlugUtil } from '@/app/lib/catalog-data';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-
 
 export const dynamicParams = true;
 
@@ -21,7 +20,7 @@ export function generateStaticParams() {
     category.products.forEach((product) => {
       paths.push({
         categorySlug: category.slug,  // Usar categorySlug consistentemente
-        productSlug: product.slug || generateSlug(product.name),
+        productSlug: product.slug || generateSlugUtil(product.name),
       });
     });
   });
@@ -49,7 +48,7 @@ export async function generateMetadata({
   
   // Buscar el producto por slug
   const product = category.products.find(
-    prod => (prod.slug || generateSlug(prod.name)) === productSlug
+    prod => (prod.slug || generateSlugUtil(prod.name)) === productSlug
   );
   
   if (!product) {
@@ -81,7 +80,7 @@ export default function ProductPage({
   
   // Verificar si el producto existe
   const productExists = category.products.some(
-    prod => (prod.slug || generateSlug(prod.name)) === productSlug
+    prod => (prod.slug || generateSlugUtil(prod.name)) === productSlug
   );
   
   if (!productExists) {
@@ -91,6 +90,7 @@ export default function ProductPage({
   return <ProductDetailPage params={{ categorySlug, productSlug }} />;
 }
 
-function generateSlug(name: any): string {
-    throw new Error('Function not implemented.');
+// Esta función no debe implementarse aquí, importamos la correcta de catalog-data.ts
+function generateSlug(name: string): string {
+  return generateSlugUtil(name);
 }
