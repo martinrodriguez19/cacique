@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import hero from "../../../../public/images/corralon/c1.jpeg";
 import envios from "../../../../public/images/corralon/c13.jpeg";
-import ferreteria from "../../../../public/images/corralon/c10.jpeg";
 const slides = [
   {
     id: 1,
