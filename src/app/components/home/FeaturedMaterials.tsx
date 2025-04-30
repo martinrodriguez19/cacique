@@ -1,83 +1,58 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
-// Featured materials data
-const materials = [
-  {
-    id: 1,
-    name: "Cemento y Hormigón",
-    image: "/images/products/cement.jpg",
-    description: "Material esencial para construcción. Contamos con las mejores marcas del mercado.",
-    category: "obraGruesa",
-    link: "/productos/obra-gruesa#cemento",
-  },
-  {
-    id: 2,
-    name: "Ladrillos y Bloques",
-    image: "/images/products/bricks.jpg",
-    description: "Amplia variedad de ladrillos y bloques para diferentes usos en la construcción.",
-    category: "obraGruesa",
-    link: "/productos/obra-gruesa#ladrillos",
-  },
-  {
-    id: 3,
-    name: "Construcción en Seco", // Cambiado de "Herramientas Eléctricas"
-    image: "/images/products/drywall.jpg", // Cambiado por una imagen más apropiada
-    description: "Sistemas completos para construcción en seco: placas de yeso, perfiles, masillas y accesorios.",
-    category: "construccionSeco",
-    link: "/productos/construccion-seco",
-  },
-  {
-    id: 4,
-    name: "Pinturas y Revestimientos",
-    image: "/images/products/paint.jpg",
-    description: "Todo en pinturas, barnices y revestimientos para interiores y exteriores.",
-    category: "ferreteria",
-    link: "/productos/ferreteria#pinturas",
-  },
-  {
-    id: 5,
-    name: "Hierros y Perfiles",
-    image: "/images/products/iron.jpg",
-    description: "Hierros y perfiles para construcción y trabajos de herrería.",
-    category: "obraGruesa",
-    link: "/productos/obra-gruesa#hierros",
-  },
-  {
-    id: 6,
-    name: "Herramientas Manuales",
-    image: "/images/products/handtools.jpg",
-    description: "Amplia gama de herramientas manuales para todo tipo de trabajos.",
-    category: "ferreteria",
-    link: "/productos/ferreteria#manuales",
-  },
-];
-
-// Categories for filtering
-const categories = [
-  { id: "all", name: "Todos" },
-  { id: "obraGruesa", name: "Obra Gruesa" },
-  { id: "ferreteria", name: "Ferretería" },
-  { id: "construccionSeco", name: "Construcción en Seco" }, // Nueva categoría
-];
+import { IProduct } from "@/app/lib/models/Product";
+import { ICategory } from "@/app/lib/models/Category";
+import { getProducts, getCategories } from "@/app/lib/services/api";
 
 export default function FeaturedMaterials() {
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
   const [activeCategory, setActiveCategory] = useState("all");
+  const [isLoading, setIsLoading] = useState(true);
 
-  const filteredMaterials =
-    activeCategory === "all"
-      ? materials
-      : materials.filter((material) => material.category === activeCategory);
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        // Obtener categorías y productos destacados
+        const categoriesData = await getCategories();
+        const productsData = await getProducts(
+          activeCategory !== "all" ? activeCategory : undefined, 
+          true
+        );
+        
+        setCategories(categoriesData);
+        setProducts(productsData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [activeCategory]);
+
+  // Filtrar productos por categoría
+  const filteredProducts = activeCategory === "all" 
+    ? products 
+    : products.filter(product => product.category === activeCategory);
+
+  // Categorías para el filtro
+  const filterCategories = [
+    { id: "all", name: "Todos" },
+    ...categories.map(cat => ({ id: cat.slug, name: cat.name }))
+  ];
 
   return (
     <div>
       {/* Category filters */}
       <div className="flex justify-center mb-10">
         <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
-          {categories.map((category) => (
+          {filterCategories.map((category) => (
             <button
               key={category.id}
               className={`px-4 py-2 rounded-full transition-all duration-300 ${
@@ -93,46 +68,67 @@ export default function FeaturedMaterials() {
         </div>
       </div>
 
-      {/* Materials grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredMaterials.map((material) => (
-          <div
-            key={material.id}
-            className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow group"
-          >
-            <div className="relative h-64 overflow-hidden">
-              <Image
-                src={material.image}
-                alt={material.name}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-            </div>
-            <div className="p-6">
-              <h3 className="text-xl font-semibold mb-2">{material.name}</h3>
-              <p className="text-gray-600 mb-4">{material.description}</p>
-              <Link
-                href={material.link}
-                className="text-[#e32929] hover:text-[#c81e1e] font-medium inline-flex items-center transition-colors"
-              >
-                Ver productos
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 ml-1"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
+      {/* Loading state */}
+      {isLoading && (
+        <div className="flex justify-center items-center py-20">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#e32929]"></div>
+        </div>
+      )}
+
+      {/* Empty state */}
+      {!isLoading && filteredProducts.length === 0 && (
+        <div className="text-center py-10">
+          <h3 className="text-xl font-medium text-gray-600">
+            No hay productos destacados en esta categoría
+          </h3>
+          <p className="mt-2 text-gray-500">
+            Prueba seleccionando otra categoría o visita nuestro catálogo completo
+          </p>
+        </div>
+      )}
+
+      {/* Products grid */}
+      {!isLoading && filteredProducts.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredProducts.map((product) => (
+            <div
+              key={product._id}
+              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow group"
+            >
+              <div className="relative h-64 overflow-hidden">
+                <Image
+                  src={product.images[0] || "/images/placeholder.jpg"}
+                  alt={product.name}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
+                <p className="text-gray-600 mb-4">{product.description}</p>
+                <Link
+                  href={`/productos/${product.category}/${product.slug}`}
+                  className="text-[#e32929] hover:text-[#c81e1e] font-medium inline-flex items-center transition-colors"
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </Link>
+                  Ver detalles
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 ml-1"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </Link>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
       
       {/* View all button */}
       <div className="mt-12 text-center">

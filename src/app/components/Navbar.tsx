@@ -1,15 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Logo from "../../../public/images/logo1.png";
+import SearchComponent from "./SearchComponent";
 
 const productCategories = [
   { name: "Obra Gruesa", href: "/productos/obra-gruesa" },
   { name: "Ferretería", href: "/productos/ferreteria" },
-  // Space for more categories as mentioned
+  { name: "Construcción en Seco", href: "/productos/construccion-seco" },
+  { name: "Catálogo Completo", href: "/catalogo" },
 ];
 
 export default function Navbar() {
@@ -17,6 +19,7 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [productMenuOpen, setProductMenuOpen] = useState(false);
   const pathname = usePathname();
+  const productMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,8 +27,20 @@ export default function Navbar() {
       setIsScrolled(scrollPosition > 50);
     };
 
+    // Cerrar menú al hacer clic fuera
+    const handleClickOutside = (event: MouseEvent) => {
+      if (productMenuRef.current && !productMenuRef.current.contains(event.target as Node)) {
+        setProductMenuOpen(false);
+      }
+    };
+
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    document.addEventListener("mousedown", handleClickOutside);
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   const toggleMobileMenu = () => {
@@ -62,7 +77,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center space-x-8">
+        <div className="hidden md:flex items-center space-x-6">
           <Link
             href="/"
             className={`font-medium hover:text-[#e32929] transition-colors ${
@@ -71,10 +86,12 @@ export default function Navbar() {
           >
             Inicio
           </Link>
-          <div className="relative group">
+          <div className="relative group" ref={productMenuRef}>
             <button
               className={`flex items-center font-medium hover:text-[#e32929] transition-colors ${
-                pathname.includes("/productos") ? "text-[#e32929]" : "text-gray-800"
+                pathname.includes("/productos") || pathname.includes("/catalogo") 
+                  ? "text-[#e32929]" 
+                  : "text-gray-800"
               }`}
               onClick={toggleProductMenu}
             >
@@ -98,13 +115,21 @@ export default function Navbar() {
             </button>
             {/* Dropdown for Products */}
             <div
-              className={`absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all duration-200 ${
+              className={`absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all duration-200 ${
                 productMenuOpen
                   ? "opacity-100 translate-y-0 pointer-events-auto"
                   : "opacity-0 -translate-y-2 pointer-events-none"
               }`}
             >
               <div className="py-1">
+                <Link
+                  href="/productos"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#e32929]"
+                  onClick={() => setProductMenuOpen(false)}
+                >
+                  Todas las categorías
+                </Link>
+                <div className="border-t border-gray-100 my-1"></div>
                 {productCategories.map((category) => (
                   <Link
                     key={category.name}
@@ -150,30 +175,40 @@ export default function Navbar() {
           >
             Trabaja con Nosotros
           </Link>
+          
+          {/* Componente de búsqueda */}
+          <SearchComponent />
         </div>
 
         {/* Mobile menu button */}
-        <button
-          className="md:hidden relative z-10"
-          onClick={toggleMobileMenu}
-          aria-label="Toggle menu"
-        >
-          <div
-            className={`w-6 h-0.5 bg-gray-800 transition-all ${
-              mobileMenuOpen ? "rotate-45 translate-y-1.5" : ""
-            }`}
-          ></div>
-          <div
-            className={`w-6 h-0.5 bg-gray-800 mt-1.5 transition-all ${
-              mobileMenuOpen ? "opacity-0" : ""
-            }`}
-          ></div>
-          <div
-            className={`w-6 h-0.5 bg-gray-800 mt-1.5 transition-all ${
-              mobileMenuOpen ? "-rotate-45 -translate-y-1.5" : ""
-            }`}
-          ></div>
-        </button>
+        <div className="md:hidden flex items-center">
+          {/* Botón de búsqueda en móvil */}
+          <div className="mr-4">
+            <SearchComponent />
+          </div>
+          
+          <button
+            className="relative z-10"
+            onClick={toggleMobileMenu}
+            aria-label="Toggle menu"
+          >
+            <div
+              className={`w-6 h-0.5 bg-gray-800 transition-all ${
+                mobileMenuOpen ? "rotate-45 translate-y-1.5" : ""
+              }`}
+            ></div>
+            <div
+              className={`w-6 h-0.5 bg-gray-800 mt-1.5 transition-all ${
+                mobileMenuOpen ? "opacity-0" : ""
+              }`}
+            ></div>
+            <div
+              className={`w-6 h-0.5 bg-gray-800 mt-1.5 transition-all ${
+                mobileMenuOpen ? "-rotate-45 -translate-y-1.5" : ""
+              }`}
+            ></div>
+          </button>
+        </div>
 
         {/* Mobile Menu */}
         <div
@@ -181,7 +216,7 @@ export default function Navbar() {
             mobileMenuOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          <div className="flex flex-col bg-white  space-y-4 pt-24 px-6">
+          <div className="flex flex-col bg-white space-y-4 pt-24 px-6">
             <Link
               href="/"
               className={`text-lg font-medium py-2 border-b border-gray-100 ${
@@ -194,7 +229,9 @@ export default function Navbar() {
             <div>
               <button
                 className={`text-lg font-medium py-2 w-full text-left flex justify-between items-center ${
-                  pathname.includes("/productos") ? "text-[#e32929]" : "text-gray-800"
+                  pathname.includes("/productos") || pathname.includes("/catalogo") 
+                    ? "text-[#e32929]" 
+                    : "text-gray-800"
                 }`}
                 onClick={toggleProductMenu}
               >
@@ -224,6 +261,13 @@ export default function Navbar() {
                     : "max-h-0 opacity-0 overflow-hidden"
                 }`}
               >
+                <Link
+                  href="/productos"
+                  className="block py-2 text-gray-600 hover:text-[#e32929] border-b border-gray-100"
+                  onClick={toggleMobileMenu}
+                >
+                  Todas las categorías
+                </Link>
                 {productCategories.map((category) => (
                   <Link
                     key={category.name}

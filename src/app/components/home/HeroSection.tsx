@@ -3,7 +3,9 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
+import hero from "../../../../public/images/corralon/c1.jpeg";
+import envios from "../../../../public/images/corralon/c13.jpeg";
+import ferreteria from "../../../../public/images/corralon/c10.jpeg";
 const slides = [
   {
     id: 1,
@@ -11,7 +13,7 @@ const slides = [
     subtitle: "Todo lo que necesitas para tu obra en un solo lugar",
     cta: "Ver Productos",
     link: "/productos/obra-gruesa",
-    image: "/images/hero-1.jpg",
+    image: hero,
   },
   {
     id: 2,
@@ -19,15 +21,7 @@ const slides = [
     subtitle: "Entregamos en el día para que tu obra no se detenga",
     cta: "Consultar Zonas",
     link: "/contacto",
-    image: "/images/hero-2.jpg",
-  },
-  {
-    id: 3,
-    title: "Ferretería Completa",
-    subtitle: "Herramientas y accesorios para profesionales y aficionados",
-    cta: "Descubrir Ferretería",
-    link: "/productos/ferreteria",
-    image: "/images/hero-3.jpg",
+    image: envios,
   },
 ];
 

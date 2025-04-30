@@ -1,38 +1,33 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
-
-const categories = [
-  {
-    id: "obra-gruesa",
-    name: "Obra Gruesa",
-    description:
-      "Materiales para cimientos, estructura y cerramientos de tu construcción.",
-    image: "/images/categories/obra-gruesa.jpg",
-    link: "/productos/obra-gruesa",
-  },
-  {
-    id: "ferreteria",
-    name: "Ferretería",
-    description:
-      "Herramientas y accesorios de calidad para profesionales y aficionados.",
-    image: "/images/categories/ferreteria.jpg",
-    link: "/productos/ferreteria",
-  },
-  // Placeholder for future categories
-  {
-    id: "coming-soon",
-    name: "Próximamente",
-    description:
-      "Estamos ampliando nuestro catálogo. Muy pronto más categorías disponibles.",
-    image: "/images/categories/coming-soon.jpg",
-    link: "#",
-    disabled: true,
-  },
-];
+import Navbar from "@/app/components/Navbar";
+import Footer from "@/app/components/Footer";
+import { getCategories } from "@/app/lib/services/api";
+import { ICategory } from "@/app/lib/models/Category";
 
 export default function ProductosPage() {
+  const [categories, setCategories] = useState<ICategory[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setIsLoading(true);
+      try {
+        const data = await getCategories();
+        setCategories(data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   return (
     <div className="pt-24 pb-16">
       <Navbar />
@@ -48,42 +43,54 @@ export default function ProductosPage() {
           </p>
         </div>
 
+        {/* Loading state */}
+        {isLoading && (
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#e32929]"></div>
+          </div>
+        )}
+
         {/* Categories */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          {categories.map((category) => (
-            <div
-              key={category.id}
-              className={`bg-white rounded-lg overflow-hidden shadow-lg border border-gray-200 ${
-                category.disabled ? "opacity-75" : "hover:shadow-xl"
-              } transition-all`}
-            >
-              <div className="relative h-60">
-                <Image
-                  src={category.image}
-                  alt={category.name}
-                  fill
-                  className="object-cover"
-                />
+        {!isLoading && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            {categories.length > 0 ? (
+              categories.map((category) => (
+                <div
+                  key={category._id}
+                  className="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-200 hover:shadow-xl transition-all"
+                >
+                  <div className="relative h-60">
+                    <Image
+                      src={category.image || "/images/placeholder.jpg"}
+                      alt={category.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <h2 className="text-2xl font-semibold mb-3">{category.name}</h2>
+                    <p className="text-gray-600 mb-4">{category.description}</p>
+                    <Link
+                      href={`/productos/${category.slug}`}
+                      className="btn-primary inline-block"
+                    >
+                      Ver productos
+                    </Link>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="col-span-3 text-center py-10">
+                <h3 className="text-xl font-medium text-gray-600">
+                  No hay categorías disponibles
+                </h3>
+                <p className="mt-2 text-gray-500">
+                  Vuelve más tarde para ver nuestro catálogo completo
+                </p>
               </div>
-              <div className="p-6">
-                <h2 className="text-2xl font-semibold mb-3">{category.name}</h2>
-                <p className="text-gray-600 mb-4">{category.description}</p>
-                {category.disabled ? (
-                  <span className="inline-block px-4 py-2 bg-gray-200 text-gray-600 rounded-md">
-                    Próximamente
-                  </span>
-                ) : (
-                  <Link
-                    href={category.link}
-                    className="btn-primary inline-block"
-                  >
-                    Ver productos
-                  </Link>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
+            )}
+          </div>
+        )}
 
         {/* Product Search Section */}
         <div className="bg-gray-50 rounded-lg p-8 mb-16">
