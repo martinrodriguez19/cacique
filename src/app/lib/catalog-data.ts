@@ -64,14 +64,7 @@ export interface CatalogCategory {
     }
   ];
   
-  // Función para generar slug a partir del nombre
-  export function generateSlug(name: string): string {
-    return name
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
-  }
-  
+
   // Función para buscar productos en el catálogo
   export function searchCatalogProducts(query: string): CatalogProduct[] {
     if (!query || query.trim() === '') return [];
