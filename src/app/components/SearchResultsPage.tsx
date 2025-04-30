@@ -17,7 +17,7 @@ import { ICategory } from "@/app/lib/models/Category";
 
 export default function SearchResultsPage() {
   const searchParams = useSearchParams();
-  const query = searchParams.get("q") || "";
+  const query = searchParams?.get("q") || "";
   
   const [products, setProducts] = useState<IProduct[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
@@ -26,7 +26,10 @@ export default function SearchResultsPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!query) return;
+      if (!query) {
+        setIsLoading(false);
+        return;
+      }
       
       setIsLoading(true);
       try {
@@ -84,8 +87,34 @@ export default function SearchResultsPage() {
           </div>
         )}
 
-        {/* Empty state */}
-        {!isLoading && products.length === 0 && (
+        {/* Empty state - no query */}
+        {!isLoading && !query && (
+          <div className="text-center py-16 bg-gray-50 rounded-lg">
+            <svg
+              className="w-20 h-20 text-gray-400 mx-auto mb-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+            <h2 className="text-2xl font-semibold mb-4">Busca un producto</h2>
+            <p className="text-gray-600 mb-6 max-w-xl mx-auto">
+              Ingresa un término de búsqueda para encontrar productos en nuestro catálogo.
+            </p>
+            <Link href="/productos" className="btn-primary">
+              Explorar categorías
+            </Link>
+          </div>
+        )}
+
+        {/* Empty state - no results */}
+        {!isLoading && query && products.length === 0 && (
           <div className="text-center py-16 bg-gray-50 rounded-lg">
             <svg
               className="w-20 h-20 text-gray-400 mx-auto mb-6"
@@ -111,7 +140,7 @@ export default function SearchResultsPage() {
         )}
 
         {/* Results with filters */}
-        {!isLoading && products.length > 0 && (
+        {!isLoading && query && products.length > 0 && (
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* Sidebar filter */}
             <div className="lg:col-span-1">
@@ -183,7 +212,7 @@ export default function SearchResultsPage() {
                       >
                         <div className="relative h-48">
                           <Image
-                            src={product.images[0] || "/images/placeholder.jpg"}
+                            src={product.images?.[0] || "/images/placeholder.jpg"}
                             alt={product.name}
                             fill
                             className="object-cover"
@@ -245,4 +274,5 @@ export default function SearchResultsPage() {
       </div>
       <Footer />
     </div>
-  );}
+  );
+}
