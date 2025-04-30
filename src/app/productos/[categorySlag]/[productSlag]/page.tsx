@@ -6,7 +6,7 @@
 // Página de detalle de producto con nombres de parámetros consistentes
 
 import ProductDetailPage from '@/app/components/ProductDetailPage';
-import { catalogData, generateSlug  } from '@/app/lib/catalog-data';
+import { catalogData  } from '@/app/lib/catalog-data';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
