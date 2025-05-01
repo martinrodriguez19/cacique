@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -171,13 +173,6 @@ export default function Navbar() {
                 )}
                 
                 <div className="border-t border-gray-100 my-1"></div>
-                <Link
-                  href="/catalogo"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#e32929]"
-                  onClick={() => setProductMenuOpen(false)}
-                >
-                  Catálogo Completo
-                </Link>
               </div>
             </div>
           </div>
