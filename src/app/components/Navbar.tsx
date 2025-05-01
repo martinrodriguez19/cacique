@@ -6,20 +6,36 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Logo from "../../../public/images/logo1.png";
 import SearchComponent from "./SearchComponent";
-
-const productCategories = [
-  { name: "Obra Gruesa", href: "/productos/obra-gruesa" },
-  { name: "Ferretería", href: "/productos/ferreteria" },
-  { name: "Construcción en Seco", href: "/productos/construccion-seco" },
-  { name: "Catálogo Completo", href: "/catalogo" },
-];
+import { getCategories } from "@/app/lib/services/api";
+import { ICategory } from "@/app/lib/models/Category";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [productMenuOpen, setProductMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [categories, setCategories] = useState<ICategory[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
   const productMenuRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+
+  // Cargar categorías desde la base de datos
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategories();
+        // Solo mostrar un número limitado de categorías en el menú
+        setCategories(data.slice(0, 5)); // Mostrar máximo 5 categorías en el menú
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,10 +43,13 @@ export default function Navbar() {
       setIsScrolled(scrollPosition > 50);
     };
 
-    // Cerrar menú al hacer clic fuera
+    // Cerrar menús al hacer clic fuera
     const handleClickOutside = (event: MouseEvent) => {
       if (productMenuRef.current && !productMenuRef.current.contains(event.target as Node)) {
         setProductMenuOpen(false);
+      }
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setUserMenuOpen(false);
       }
     };
 
@@ -50,6 +69,10 @@ export default function Navbar() {
 
   const toggleProductMenu = () => {
     setProductMenuOpen(!productMenuOpen);
+  };
+
+  const toggleUserMenu = () => {
+    setUserMenuOpen(!userMenuOpen);
   };
 
   return (
@@ -130,16 +153,31 @@ export default function Navbar() {
                   Todas las categorías
                 </Link>
                 <div className="border-t border-gray-100 my-1"></div>
-                {productCategories.map((category) => (
-                  <Link
-                    key={category.name}
-                    href={category.href}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#e32929]"
-                    onClick={() => setProductMenuOpen(false)}
-                  >
-                    {category.name}
-                  </Link>
-                ))}
+                
+                {/* Mostrar categorías dinámicas */}
+                {isLoading ? (
+                  <div className="px-4 py-2 text-sm text-gray-500">Cargando...</div>
+                ) : (
+                  categories.map((category) => (
+                    <Link
+                      key={category._id}
+                      href={`/productos/${category.slug}`}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#e32929]"
+                      onClick={() => setProductMenuOpen(false)}
+                    >
+                      {category.name}
+                    </Link>
+                  ))
+                )}
+                
+                <div className="border-t border-gray-100 my-1"></div>
+                <Link
+                  href="/catalogo"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#e32929]"
+                  onClick={() => setProductMenuOpen(false)}
+                >
+                  Catálogo Completo
+                </Link>
               </div>
             </div>
           </div>
@@ -176,15 +214,116 @@ export default function Navbar() {
             Trabaja con Nosotros
           </Link>
           
-          {/* Componente de búsqueda */}
-          <SearchComponent />
+          <div className="flex items-center space-x-3">
+            {/* Componente de búsqueda */}
+            <SearchComponent />
+            
+            {/* Icono de usuario con menú desplegable */}
+            <div className="relative" ref={userMenuRef}>
+              <button
+                onClick={toggleUserMenu}
+                className="p-1 rounded-full hover:bg-gray-100 text-gray-700 hover:text-[#e32929] transition-colors focus:outline-none"
+                aria-label="User menu"
+              >
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="h-6 w-6" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={1.5} 
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" 
+                  />
+                </svg>
+              </button>
+              
+              {/* Dropdown para el usuario */}
+              <div
+                className={`absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all duration-200 ${
+                  userMenuOpen
+                    ? "opacity-100 translate-y-0 pointer-events-auto"
+                    : "opacity-0 -translate-y-2 pointer-events-none"
+                }`}
+              >
+                <div className="py-1">
+                  <Link
+                    href="/admin"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#e32929]"
+                    onClick={() => setUserMenuOpen(false)}
+                  >
+                    Login
+                  </Link>
+
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Mobile menu button */}
         <div className="md:hidden flex items-center">
           {/* Botón de búsqueda en móvil */}
-          <div className="mr-4">
+          <div className="mr-4 flex items-center space-x-3">
             <SearchComponent />
+            
+            {/* Icono de usuario para móvil */}
+            <button
+              onClick={toggleUserMenu}
+              className="p-1 rounded-full hover:bg-gray-100 text-gray-700 transition-colors focus:outline-none"
+              aria-label="User menu"
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className="h-6 w-6" 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={1.5} 
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" 
+                />
+              </svg>
+            </button>
+            
+            {/* Dropdown para el usuario en móvil */}
+            <div
+              className={`absolute right-4 top-16 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all duration-200 z-50 ${
+                userMenuOpen
+                  ? "opacity-100 translate-y-0 pointer-events-auto"
+                  : "opacity-0 -translate-y-2 pointer-events-none"
+              }`}
+            >
+              <div className="py-1">
+                <Link
+                  href="/admin"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#e32929]"
+                  onClick={() => setUserMenuOpen(false)}
+                >
+                  Panel de Admin
+                </Link>
+                <Link
+                  href="/mi-cuenta"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#e32929]"
+                  onClick={() => setUserMenuOpen(false)}
+                >
+                  Mi Cuenta
+                </Link>
+                <Link
+                  href="/mis-pedidos"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#e32929]"
+                  onClick={() => setUserMenuOpen(false)}
+                >
+                  Mis Pedidos
+                </Link>
+              </div>
+            </div>
           </div>
           
           <button
@@ -268,16 +407,26 @@ export default function Navbar() {
                 >
                   Todas las categorías
                 </Link>
-                {productCategories.map((category) => (
+                
+                {/* Categorías dinámicas en móvil */}
+                {categories.map((category) => (
                   <Link
-                    key={category.name}
-                    href={category.href}
+                    key={category._id}
+                    href={`/productos/${category.slug}`}
                     className="block py-2 text-gray-600 hover:text-[#e32929] border-b border-gray-100"
                     onClick={toggleMobileMenu}
                   >
                     {category.name}
                   </Link>
                 ))}
+                
+                <Link
+                  href="/catalogo"
+                  className="block py-2 text-gray-600 hover:text-[#e32929] border-b border-gray-100"
+                  onClick={toggleMobileMenu}
+                >
+                  Catálogo Completo
+                </Link>
               </div>
             </div>
             <Link
@@ -316,6 +465,34 @@ export default function Navbar() {
             >
               Trabaja con Nosotros
             </Link>
+            
+            {/* Enlaces de usuario en el menú móvil */}
+            <div className="pt-4 border-t border-gray-200">
+              <h3 className="text-sm font-semibold text-gray-500 mb-2">MI CUENTA</h3>
+              <div className="space-y-2">
+                <Link
+                  href="/admin"
+                  className="block py-2 text-gray-600 hover:text-[#e32929] border-b border-gray-100"
+                  onClick={toggleMobileMenu}
+                >
+                  Panel de Admin
+                </Link>
+                <Link
+                  href="/mi-cuenta"
+                  className="block py-2 text-gray-600 hover:text-[#e32929] border-b border-gray-100"
+                  onClick={toggleMobileMenu}
+                >
+                  Mi Cuenta
+                </Link>
+                <Link
+                  href="/mis-pedidos"
+                  className="block py-2 text-gray-600 hover:text-[#e32929] border-b border-gray-100"
+                  onClick={toggleMobileMenu}
+                >
+                  Mis Pedidos
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>

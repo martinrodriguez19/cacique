@@ -1,17 +1,20 @@
 import Image from "next/image";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import about from "../../../public/images/corralon/c11.jpeg"
+import empresa from "../../../public/images/corralon/c16.jpeg"
 
 export default function EmpresaPage() {
+  
   return (
-    <div className="pt-24 pb-16">
+    <div className="pt-24 ">
       <Navbar />
-      <div className="container-custom">
+      <div className="container-custom pb-16">
         {/* Hero Section */}
         <div className="relative mb-16 overflow-hidden rounded-xl">
           <div className="absolute inset-0 bg-black/50 z-10"></div>
           <Image
-            src="/images/about-hero.jpg"
+            src={about}
             alt="El Cacique Corralón y Ferretería"
             width={1200}
             height={400}
@@ -22,9 +25,6 @@ export default function EmpresaPage() {
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
                 Nuestra Empresa
               </h1>
-              <p className="text-xl text-white/90 max-w-2xl">
-                Conoce la historia y valores de El Cacique Corralón
-              </p>
             </div>
           </div>
         </div>
@@ -32,7 +32,7 @@ export default function EmpresaPage() {
         {/* Company History */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
           <div>
-            <h2 className="text-3xl font-semibold mb-6">Nuestra Historia</h2>
+            <h2 className="text-3xl font-semibold mb-6">Nosotros</h2>
             <p className="text-gray-600 mb-4">
       
               Con el paso de los años, nos hemos consolidado como uno de los corralones de referencia 
@@ -46,7 +46,7 @@ export default function EmpresaPage() {
           </div>
           <div className="relative h-80 rounded-lg overflow-hidden shadow-lg">
             <Image
-              src="/images/company-history.jpg"
+              src={empresa}
               alt="Historia de El Cacique"
               fill
               className="object-cover"
@@ -199,13 +199,12 @@ export default function EmpresaPage() {
           </div>
         </div>
 
-        {/* Team Section */}
+        { /*
         <div className="mb-16">
           <h2 className="text-3xl font-semibold mb-10 text-center">
             Nuestro Equipo
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Placeholder for team members */}
             {[1, 2, 3, 4].map((member) => (
               <div key={member} className="text-center">
                 <div className="relative w-48 h-48 mx-auto rounded-full overflow-hidden mb-4">
@@ -231,7 +230,7 @@ export default function EmpresaPage() {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
         
         {/* Call to action */}
         <div className="bg-gradient-to-r from-[#e32929]/90 to-[#c81e1e] rounded-xl p-8 lg:p-12 text-center text-white">

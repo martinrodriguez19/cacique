@@ -25,7 +25,7 @@ export default function WhatsAppButton() {
     };
   }, []);
 
-  const whatsappNumber = "+5491112345678"; // Reemplazar con el número real
+  const whatsappNumber = "+5491155962840"; // Reemplazar con el número real
   const message = "Hola, estoy interesado en consultar sobre sus productos.";
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 

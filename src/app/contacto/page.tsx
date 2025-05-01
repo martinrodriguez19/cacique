@@ -80,9 +80,9 @@ export default function ContactoPage() {
   };
 
   return (
-    <div className="pt-36 pb-16">
+    <div className="pt-36 ">
       <Navbar />
-      <div className="container-custom">
+      <div className="container-custom pb-16">
         {/* Hero Section */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">Contacto</h1>
@@ -117,8 +117,7 @@ export default function ContactoPage() {
                   </div>
                   <div>
                     <h3 className="font-medium text-lg">Teléfono</h3>
-                    <p className="text-gray-600">(011) 4000-0000</p>
-                    <p className="text-gray-600">(011) 4000-0001</p>
+                    <p className="text-gray-600">+54 9 11 5596-2840</p>
                   </div>
                 </div>
                 
@@ -140,8 +139,7 @@ export default function ContactoPage() {
                   </div>
                   <div>
                     <h3 className="font-medium text-lg">Email</h3>
-                    <p className="text-gray-600">info@elcacique.com.ar</p>
-                    <p className="text-gray-600">ventas@elcacique.com.ar</p>
+                    <p className="text-gray-600">caciquemateriales@gmail.com</p>
                   </div>
                 </div>
                 
@@ -170,8 +168,8 @@ export default function ContactoPage() {
                   <div>
                     <h3 className="font-medium text-lg">Dirección</h3>
                     <p className="text-gray-600">
-                      Av. Ejemplo 1234, Vicente López,<br />
-                      Buenos Aires, Argentina
+                    Venezuela 4846, B1603ADJ Villa Martelli,<br />
+                    Provincia de Buenos Aires
                     </p>
                   </div>
                 </div>
@@ -194,68 +192,13 @@ export default function ContactoPage() {
                   </div>
                   <div>
                     <h3 className="font-medium text-lg">Horario de Atención</h3>
-                    <p className="text-gray-600">Lunes a Viernes: 8:00 - 18:00</p>
-                    <p className="text-gray-600">Sábados: 8:00 - 13:00</p>
-                    <p className="text-gray-600">Domingos: Cerrado</p>
+                    <p className="text-gray-600">8:00 - 16:30hs</p>
+              
                   </div>
                 </div>
               </div>
             </div>
             
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-              <div className="relative h-64 w-full">
-                {/* Placeholder for map */}
-                <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
-                  <svg
-                    className="w-12 h-12 text-gray-400"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
-                </div>
-                <Image 
-                  src="/images/map-placeholder.jpg"
-                  alt="Ubicación de El Cacique"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-4">
-                <a 
-                  href="https://maps.google.com" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-[#e32929] hover:text-[#c81e1e] font-medium inline-flex items-center"
-                >
-                  Ver en Google Maps
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    className="h-4 w-4 ml-1" 
-                    viewBox="0 0 20 20" 
-                    fill="currentColor"
-                  >
-                    <path 
-                      fillRule="evenodd" 
-                      d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" 
-                      clipRule="evenodd" 
-                    />
-                  </svg>
-                </a>
-              </div>
-            </div>
           </div>
           
           <div className="bg-white rounded-lg shadow-lg p-8">
@@ -424,7 +367,7 @@ export default function ContactoPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <a
-              href="tel:01140000000"
+              href="tel:5491155962840"
               className="inline-flex items-center px-6 py-3 bg-[#e32929] hover:bg-[#c81e1e] text-white rounded-md transition-colors font-medium"
             >
               <svg
@@ -443,7 +386,7 @@ export default function ContactoPage() {
               Llamar ahora
             </a>
             <a
-              href="https://wa.me/5491100000000"
+              href="https://wa.me/5491155962840"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center px-6 py-3 bg-[#25D366] hover:bg-[#128C7E] text-white rounded-md transition-colors font-medium"

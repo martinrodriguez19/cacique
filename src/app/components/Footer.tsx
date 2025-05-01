@@ -1,10 +1,30 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { getCategories } from "@/app/lib/services/api";
+import { ICategory } from "@/app/lib/models/Category";
 import Logo from "../../../public/images/logo1.png";
 
-
 export default function Footer() {
+  const [categories, setCategories] = useState<ICategory[]>([]);
+
+  // Cargar categorías desde la base de datos
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategories();
+        // Mostrar hasta 6 categorías en el footer
+        setCategories(data.slice(0, 6));
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   return (
     <footer className="bg-[#333333] text-white pt-16 pb-6">
       <div className="container-custom">
@@ -17,7 +37,7 @@ export default function Footer() {
             alt="El Cacique"
             width={150}
             height={150}
-            className="h-16 bg-gray-200 w-auto mr-3  rounded-xl object-contain"
+            className="h-16 w-auto mr-3 bg-gray-200 rounded-xl object-contain"
           />
           <div className="flex flex-col">
             <h1 className="text-xl md:text-2xl font-bold text-gray-200">El Cacique</h1>
@@ -28,7 +48,26 @@ export default function Footer() {
               Materiales de calidad para tu proyecto. Somos especialistas en materiales de construcción y ferretería con los mejores precios y servicio.
             </p>
             <div className="flex space-x-4 mt-6">
-
+              <a
+                href="https://www.facebook.com/agustin.dibiase.566?mibextid=LQQJ4d&rdid=Ba6HoKt5Dl3eHm9c&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F9KGvfnyEtQUmk6A5%2F%3Fmibextid%3DLQQJ4d#"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 hover:text-white transition-colors"
+                aria-label="Facebook"
+              >
+                <svg
+                  className="h-6 w-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </a>
               <a
                 href="https://www.instagram.com/caciquemateriales/"
                 target="_blank"
@@ -87,44 +126,10 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="/productos/obra-gruesa"
+                    href="/productos"
                     className="text-gray-300 hover:text-white transition-colors"
                   >
-                    Obra Gruesa
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/productos/ferreteria"
-                    className="text-gray-300 hover:text-white transition-colors"
-                  >
-                    Ferretería
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/productos/terminaciones"
-                    className="text-gray-300 hover:text-white transition-colors"
-                  >
-                    Terminaciones
-                  </Link>
-                </li>
-              </ul>
-              <ul className="space-y-3">
-                <li>
-                  <Link
-                    href="/productos/electricidad"
-                    className="text-gray-300 hover:text-white transition-colors"
-                  >
-                    Electricidad
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/productos/pinturas"
-                    className="text-gray-300 hover:text-white transition-colors"
-                  >
-                    Pinturas
+                    Productos
                   </Link>
                 </li>
                 <li>
@@ -143,6 +148,19 @@ export default function Footer() {
                     Cotiza tu Proyecto
                   </Link>
                 </li>
+              </ul>
+              <ul className="space-y-3">
+                {/* Enlaces a categorías dinámicas */}
+                {categories.slice(0, 4).map((category) => (
+                  <li key={category._id}>
+                    <Link
+                      href={`/productos/${category.slug}`}
+                      className="text-gray-300 hover:text-white transition-colors"
+                    >
+                      {category.name}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
@@ -174,7 +192,8 @@ export default function Footer() {
                   />
                 </svg>
                 <span className="text-gray-300">
-                Venezuela 4846, B1603ADJ Villa Martelli, Provincia de Buenos Aires
+                  <Link href={"https://maps.app.goo.gl/ETZqmHEdyZDyNbRC7"} className="text-gray-300 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
+                Venezuela 4846, B1603ADJ Villa Martelli, Provincia de Buenos Aires</Link>
                 </span>
               </li>
               <li className="flex items-start">
@@ -225,7 +244,6 @@ export default function Footer() {
                 </svg>
                 <div className="text-gray-300">
                   <p className="mb-1">8:00-16:30hs</p>
-      
                 </div>
               </li>
             </ul>
@@ -278,5 +296,4 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  );
-}
+  );}

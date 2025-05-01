@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import LogoutButton from '@/app/components/LogoutButton';
 
 export default function AdminNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -144,6 +145,7 @@ export default function AdminNavbar() {
           >
             Ver sitio web
           </Link>
+          <LogoutButton />
         </div>
       </div>
     </nav>

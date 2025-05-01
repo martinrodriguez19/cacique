@@ -1,98 +1,204 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-nocheck
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Navbar from "@/app/components/Navbar";
-import Footer from "@/app/components/Footer";
-import { getProducts, getCategoryById, getCategories } from "@/app/lib/services/api";
+import { useRouter } from "next/navigation";
+import { getCategories, getProducts } from "@/app/lib/services/api";
 import { IProduct } from "@/app/lib/models/Product";
 import { ICategory } from "@/app/lib/models/Category";
+import Navbar from "@/app/components/Navbar";
+import Footer from "@/app/components/Footer";
 
-interface CategoryPageProps {
+// Corregir la interfaz de props para que coincida con la estructura de la URL
+interface CategoryProductsPageProps {
   params: {
-    categorySlug: string; // Asegurarse de que este nombre coincida con el parámetro de la ruta
+    categorySlug: string;
   };
 }
 
-export default function CategoryProductsPage({ params }: CategoryPageProps) {
+export default function CategoryProductsPage({ params }: CategoryProductsPageProps) {
+  console.log("CategoryProductsPage", params, params.categorySlug);
   const { categorySlug } = params;
-  const [products, setProducts] = useState<IProduct[]>([]);
-  const [category, setCategory] = useState<ICategory | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [subcategories, setSubcategories] = useState<string[]>([]);
-  const [activeSubcategory, setActiveSubcategory] = useState("all");
+  console.log("CategoryProductsPage categorySlug:", categorySlug);
 
+  const [category, setCategory] = useState<ICategory | null>(null);
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Estados para la paginación
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage, setProductsPerPage] = useState(9);
+  const [totalPages, setTotalPages] = useState(1);
+  
+  const router = useRouter();
+
+  // Cargar categoría y productos
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCategoryAndProducts = async () => {
       setIsLoading(true);
       try {
-        // Obtener productos de la categoría
-        const productsData = await getProducts(categorySlug);
-        setProducts(productsData);
-
-        // Extraer subcategorías únicas
-        const subCats = [...new Set(productsData.map(product => product.subcategory))].filter(Boolean) as string[];
-        setSubcategories(subCats);
-
-        // Intentar obtener los detalles de la categoría
-        const categoriesData = await getCategories();
-        const categoryData = categoriesData.find(cat => cat.slug === categorySlug) || null;
-        setCategory(categoryData);
+        // Obtener todas las categorías
+        const categories = await getCategories();
+        
+        // Buscar la categoría actual por slug
+        const currentCategory = categories.find(cat => cat.slug === categorySlug);
+        
+        if (currentCategory) {
+          setCategory(currentCategory);
+          
+          // Obtener productos de esta categoría
+          const categoryProducts = await getProducts(currentCategory.slug);
+          setProducts(categoryProducts);
+          
+          // Calcular el total de páginas
+          setTotalPages(Math.ceil(categoryProducts.length / productsPerPage));
+        } else {
+          // Si la categoría no existe, redireccionar a la página de productos
+          router.push('/productos');
+        }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching category data:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchData();
-  }, [categorySlug]);
+    if (categorySlug) {
+      fetchCategoryAndProducts();
+    }
+  }, [categorySlug, router, productsPerPage]);
 
-  // Filtrar productos por subcategoría y búsqueda
-  const filteredProducts = products.filter((product) => {
-    const matchesSubcategory = activeSubcategory === "all" || product.subcategory === activeSubcategory;
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          product.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesSubcategory && matchesSearch;
-  });
+  // Ajustar cantidad de productos por página según el tamaño de pantalla
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setProductsPerPage(6);
+      } else if (window.innerWidth < 1024) {
+        setProductsPerPage(6);
+      } else {
+        setProductsPerPage(9);
+      }
+    };
 
-  // Construir las categorías de filtro
-  const filterCategories = [
-    { id: "all", name: "Todos" },
-    ...subcategories.map(sub => ({ id: sub, name: sub }))
-  ];
+    // Inicializar
+    handleResize();
+    
+    // Agregar event listener
+    window.addEventListener('resize', handleResize);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Recalcular total de páginas cuando cambian los productos o productsPerPage
+  useEffect(() => {
+    setTotalPages(Math.ceil(products.length / productsPerPage));
+    // Validar que la página actual esté dentro del rango
+    if (currentPage > Math.ceil(products.length / productsPerPage) && products.length > 0) {
+      setCurrentPage(Math.ceil(products.length / productsPerPage));
+    }
+  }, [products, productsPerPage, currentPage]);
+
+  // Obtener productos para la página actual
+  const currentProducts = products.slice(
+    (currentPage - 1) * productsPerPage,
+    currentPage * productsPerPage
+  );
+
+  // Función para cambiar de página
+  const paginate = (pageNumber: number) => {
+    if (pageNumber > 0 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+      
+      // Scroll suave hacia el inicio de los productos
+      document.getElementById('category-products')?.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
+  // Generar array de números de página para la paginación
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      // Siempre mostrar primera página
+      pageNumbers.push(1);
+      
+      // Determinar rango alrededor de la página actual
+      let startPage = Math.max(2, currentPage - 1);
+      let endPage = Math.min(totalPages - 1, currentPage + 1);
+      
+      // Ajustar el rango cerca del principio o final
+      if (currentPage <= 3) {
+        endPage = 4;
+      } else if (currentPage >= totalPages - 2) {
+        startPage = totalPages - 3;
+      }
+      
+      // Agregar ellipsis si es necesario
+      if (startPage > 2) {
+        pageNumbers.push('...');
+      }
+      
+      // Agregar páginas del rango
+      for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+      }
+      
+      // Agregar ellipsis si es necesario
+      if (endPage < totalPages - 1) {
+        pageNumbers.push('...');
+      }
+      
+      // Siempre mostrar la última página
+      pageNumbers.push(totalPages);
+    }
+    
+    return pageNumbers;
+  };
 
   return (
-    <div className="pt-24 pb-16">
+    <div className="pt-24 " id="category-products">
       <Navbar />
-      
-      <div className="container-custom">
-        {/* Hero Section */}
-        <div className="relative mb-12 overflow-hidden rounded-xl">
-          <div className="absolute inset-0 bg-black/50 z-10"></div>
-          <Image
-            src={category?.image || "/images/categories/placeholder.jpg"}
-            alt={category?.name || "Categoría"}
-            width={1200}
-            height={400}
-            className="w-full h-64 object-cover"
-          />
-          <div className="absolute inset-0 z-20 flex items-center">
-            <div className="container-custom">
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                {category?.name || "Productos"}
-              </h1>
-              <p className="text-xl text-white/90 max-w-2xl">
-                {category?.description || "Explora nuestra selección de productos de alta calidad"}
-              </p>
-            </div>
-          </div>
+      <div className="container-custom pb-16">
+        {/* Breadcrumbs */}
+        <nav className="mb-8">
+          <ol className="flex items-center text-sm">
+            <li>
+              <Link href="/" className="text-gray-500 hover:text-[#e32929]">
+                Inicio
+              </Link>
+            </li>
+            <li className="mx-2 text-gray-500">/</li>
+            <li>
+              <Link href="/productos" className="text-gray-500 hover:text-[#e32929]">
+                Productos
+              </Link>
+            </li>
+            <li className="mx-2 text-gray-500">/</li>
+            <li className="text-gray-700 font-medium">
+              {category?.name || 'Cargando...'}
+            </li>
+          </ol>
+        </nav>
+
+        {/* Category header */}
+        <div className="mb-12 text-center">
+          <h1 className="text-4xl font-bold mb-4">
+            {category?.name || 'Cargando...'}
+          </h1>
+          {category && (
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              {category.description || `Explora nuestra selección de productos de ${category.name.toLowerCase()} de calidad premium para tus proyectos.`}
+            </p>
+          )}
         </div>
 
         {/* Loading state */}
@@ -102,163 +208,186 @@ export default function CategoryProductsPage({ params }: CategoryPageProps) {
           </div>
         )}
 
-        {!isLoading && (
-          <>
-            {/* Search and Filter */}
-            <div className="mb-12">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                {/* Search */}
-                <div className="relative w-full md:w-80">
-                  <input
-                    type="text"
-                    placeholder="Buscar productos..."
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-[#e32929] focus:border-[#e32929] outline-none"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+        {/* No products message */}
+        {!isLoading && products.length === 0 && (
+          <div className="text-center py-16 bg-gray-50 rounded-lg">
+            <svg
+              className="w-16 h-16 text-gray-400 mx-auto mb-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+              />
+            </svg>
+            <h2 className="text-2xl font-medium text-gray-700 mb-2">
+              No hay productos disponibles
+            </h2>
+            <p className="text-gray-500 mb-6">
+              Actualmente no hay productos en esta categoría. Por favor, consulta otras categorías o vuelve más tarde.
+            </p>
+            <Link href="/productos" className="btn-primary">
+              Ver todas las categorías
+            </Link>
+          </div>
+        )}
+
+        {/* Products grid */}
+        {!isLoading && currentProducts.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            {currentProducts.map((product) => (
+              <div
+                key={product._id}
+                className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow group"
+              >
+                <div className="relative h-64 overflow-hidden">
+                  <Image
+                    src={product.images[0] || "/images/placeholder.jpg"}
+                    alt={product.name}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
+                  <p className="text-gray-600 mb-4 line-clamp-2">{product.description}</p>
+                  {product.price ? (
+                    <div className="text-lg font-semibold text-[#e32929] mb-4">
+                      {new Intl.NumberFormat('es-AR', {
+                        style: 'currency',
+                        currency: 'ARS'
+                      }).format(product.price)}
+                      {product.unit && (
+                        <span className="text-sm text-gray-600 ml-1">/ {product.unit}</span>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="mb-4">
+                      <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">
+                        Consultar precio
+                      </span>
+                    </div>
+                  )}
+                  <Link
+                    href={`/productos/${categorySlug}/${product.slug}`}
+                    className="text-[#e32929] hover:text-[#c81e1e] font-medium inline-flex items-center transition-colors"
+                  >
+                    Ver detalles
                     <svg
-                      className="w-5 h-5 text-gray-400"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 ml-1"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
                     >
                       <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        fillRule="evenodd"
+                        d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                        clipRule="evenodd"
                       />
                     </svg>
-                  </div>
+                  </Link>
                 </div>
-
-                {/* Subcategories on desktop */}
-                {subcategories.length > 0 && (
-                  <div className="hidden md:flex flex-wrap items-center gap-2">
-                    <span className="text-gray-600 font-medium">Filtrar por:</span>
-                    {filterCategories.map((category) => (
-                      <button
-                        key={category.id}
-                        className={`px-3 py-1 text-sm rounded-full transition-all ${
-                          activeSubcategory === category.id
-                            ? "bg-[#e32929] text-white"
-                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                        }`}
-                        onClick={() => setActiveSubcategory(category.id)}
-                      >
-                        {category.name}
-                      </button>
-                    ))}
-                  </div>
-                )}
               </div>
-
-              {/* Subcategories on mobile */}
-              {subcategories.length > 0 && (
-                <div className="md:hidden mt-4 overflow-x-auto whitespace-nowrap py-2 -mx-4 px-4">
-                  {filterCategories.map((category) => (
-                    <button
-                      key={category.id}
-                      className={`px-3 py-1 text-sm rounded-full transition-all mr-2 ${
-                        activeSubcategory === category.id
-                          ? "bg-[#e32929] text-white"
-                          : "bg-gray-100 text-gray-700"
-                      }`}
-                      onClick={() => setActiveSubcategory(category.id)}
-                    >
-                      {category.name}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Products Grid */}
-            {filteredProducts.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {filteredProducts.map((product) => (
-                  <div
-                    key={product._id}
-                    className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow border border-gray-200"
-                  >
-                    <div className="relative h-48">
-                      <Image
-                        src={product.images[0] || "/images/placeholder.jpg"}
-                        alt={product.name}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="p-4">
-                      <h3 className="text-lg font-medium mb-2">{product.name}</h3>
-                      <p className="text-gray-600 text-sm mb-4">{product.description}</p>
-                      <div className="flex justify-between items-center">
-                        {product.subcategory && (
-                          <span className="text-xs px-2 py-1 bg-gray-100 rounded-full text-gray-600">
-                            {product.subcategory}
-                          </span>
-                        )}
-                        <Link
-                          href="/cotiza"
-                          className="text-[#e32929] hover:text-[#c81e1e] text-sm font-medium"
-                        >
-                          Solicitar precio
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-12 bg-gray-50 rounded-lg">
+            ))}
+          </div>
+        )}
+        
+        {/* Pagination */}
+        {!isLoading && products.length > productsPerPage && (
+          <div className="mt-10 flex justify-center">
+            <nav className="flex items-center">
+              <button
+                onClick={() => paginate(currentPage - 1)}
+                disabled={currentPage === 1}
+                className={`px-3 py-1 rounded-l-md border ${
+                  currentPage === 1
+                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                    : "bg-white text-gray-700 hover:bg-gray-50"
+                }`}
+                aria-label="Página anterior"
+              >
                 <svg
-                  className="w-16 h-16 text-gray-400 mx-auto mb-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
                 >
                   <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    fillRule="evenodd"
+                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                    clipRule="evenodd"
                   />
                 </svg>
-                <h3 className="text-xl font-medium mb-2">No se encontraron productos</h3>
-                <p className="text-gray-600 mb-4">
-                  No hay productos que coincidan con tu búsqueda. Intenta con otros términos o categorías.
-                </p>
+              </button>
+              
+              {getPageNumbers().map((number, index) => (
                 <button
-                  onClick={() => {
-                    setSearchQuery("");
-                    setActiveSubcategory("all");
-                  }}
-                  className="btn-secondary"
+                  key={index}
+                  onClick={() => typeof number === 'number' ? paginate(number) : null}
+                  className={`px-3 py-1 border-t border-b ${
+                    number === currentPage
+                      ? "bg-[#e32929] text-white border-[#e32929]"
+                      : number === '...'
+                      ? "bg-white text-gray-500 cursor-default"
+                      : "bg-white text-gray-700 hover:bg-gray-50"
+                  }`}
+                  disabled={number === '...'}
                 >
-                  Ver todos los productos
+                  {number}
                 </button>
-              </div>
-            )}
-
-            {/* Call to Action */}
-            <div className="mt-16 bg-gray-50 rounded-lg p-8 text-center">
-              <h2 className="text-2xl font-semibold mb-4">¿No encuentras lo que buscas?</h2>
-              <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-                Contamos con un amplio catálogo de productos. Si no encuentras lo que necesitas, 
-                contáctanos y te ayudaremos a conseguirlo.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Link href="/contacto" className="btn-primary">
-                  Contactar ahora
-                </Link>
-                <Link href="/cotiza" className="btn-secondary">
-                  Solicitar cotización
-                </Link>
-              </div>
-            </div>
-          </>
+              ))}
+              
+              <button
+                onClick={() => paginate(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className={`px-3 py-1 rounded-r-md border ${
+                  currentPage === totalPages
+                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                    : "bg-white text-gray-700 hover:bg-gray-50"
+                }`}
+                aria-label="Página siguiente"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+            </nav>
+          </div>
         )}
+        
+        {/* CTA Section */}
+        <div className="mt-16 bg-gray-50 rounded-lg p-8">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-semibold mb-3">
+              ¿No encuentras lo que buscas?
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Contamos con un amplio catálogo de productos. Si no encuentras lo que necesitas,
+              contáctanos y te ayudaremos a conseguirlo con las mejores condiciones.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link href="/contacto" className="btn-primary">
+              Contactar ahora
+            </Link>
+            <Link href="/cotiza" className="btn-secondary">
+              Solicitar cotización
+            </Link>
+          </div>
+        </div>
       </div>
       <Footer />
     </div>

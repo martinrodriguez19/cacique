@@ -10,13 +10,32 @@ type ApiResponse<T> = {
   error?: string;
 };
 
+// Función para construir la URL base
+const getBaseUrl = () => {
+  // Verificar si estamos en el navegador o en el servidor
+  if (typeof window !== 'undefined') {
+    // Cliente (navegador)
+    return window.location.origin;
+  } else {
+    // Servidor
+    // Usa la variable de entorno o un valor predeterminado
+    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+  }
+};
+
 // Función para obtener todas las categorías
 export async function getCategories(featured?: boolean): Promise<ICategory[]> {
   try {
-    const url = new URL('/api/admin/categories', window.location.origin);
+    const baseUrl = getBaseUrl();
+    const url = new URL('/api/admin/categories', baseUrl);
+    
     if (featured) url.searchParams.append('featured', 'true');
 
-    const response = await fetch(url.toString());
+    const response = await fetch(url.toString(), { 
+      // Configuración para asegurar que funciona en SSR
+      cache: 'no-store' 
+    });
+    
     const result: ApiResponse<ICategory[]> = await response.json();
 
     if (!result.success) {
@@ -33,7 +52,11 @@ export async function getCategories(featured?: boolean): Promise<ICategory[]> {
 // Función para obtener una categoría por ID
 export async function getCategoryById(id: string): Promise<ICategory | null> {
   try {
-    const response = await fetch(`/api/admin/categories/${id}`);
+    const baseUrl = getBaseUrl();
+    const response = await fetch(`${baseUrl}/api/admin/categories/${id}`, { 
+      cache: 'no-store' 
+    });
+    
     const result: ApiResponse<ICategory> = await response.json();
 
     if (!result.success) {
@@ -50,11 +73,16 @@ export async function getCategoryById(id: string): Promise<ICategory | null> {
 // Función para obtener productos
 export async function getProducts(category?: string, featured?: boolean): Promise<IProduct[]> {
   try {
-    const url = new URL('/api/admin/products', window.location.origin);
+    const baseUrl = getBaseUrl();
+    const url = new URL('/api/admin/products', baseUrl);
+    
     if (category) url.searchParams.append('category', category);
     if (featured) url.searchParams.append('featured', 'true');
 
-    const response = await fetch(url.toString());
+    const response = await fetch(url.toString(), { 
+      cache: 'no-store' 
+    });
+    
     const result: ApiResponse<IProduct[]> = await response.json();
 
     if (!result.success) {
@@ -71,7 +99,11 @@ export async function getProducts(category?: string, featured?: boolean): Promis
 // Función para obtener un producto por ID
 export async function getProductById(id: string): Promise<IProduct | null> {
   try {
-    const response = await fetch(`/api/admin/products/${id}`);
+    const baseUrl = getBaseUrl();
+    const response = await fetch(`${baseUrl}/api/admin/products/${id}`, { 
+      cache: 'no-store' 
+    });
+    
     const result: ApiResponse<IProduct> = await response.json();
 
     if (!result.success) {

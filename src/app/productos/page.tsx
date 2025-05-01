@@ -29,12 +29,12 @@ export default function ProductosPage() {
   }, []);
 
   return (
-    <div className="pt-24 pb-16">
+    <div className="pt-24 ">
       <Navbar />
       <div className="container-custom">
         {/* Hero Section */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <h1 className="text-4xl mt-20 md:text-5xl font-bold mb-6">
             Nuestros Productos
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -115,7 +115,7 @@ export default function ProductosPage() {
         </div>
 
         {/* Why Choose Us */}
-        <div>
+        <div className="pb-16">
           <h2 className="text-3xl font-semibold mb-8 text-center">
             ¿Por qué elegirnos?
           </h2>
