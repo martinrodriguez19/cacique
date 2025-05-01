@@ -11,7 +11,7 @@ const slides = [
     title: "Materiales de Construcción de Calidad",
     subtitle: "Todo lo que necesitas para tu obra en un solo lugar",
     cta: "Ver Productos",
-    link: "/productos/obra-gruesa",
+    link: "/productos",
     image: hero,
   },
   {
