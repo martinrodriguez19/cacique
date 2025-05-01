@@ -1,49 +1,36 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import Logo from "../../../public/images/logo1.png";
+
 
 export default function Footer() {
   return (
     <footer className="bg-[#333333] text-white pt-16 pb-6">
       <div className="container-custom">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {/* Logo and brief description */}
-          <div className="col-span-1 md:col-span-2 lg:col-span-1">
-            <Link href="/">
-              <Image
-                src="/images/logo-white.png" 
-                alt="El Cacique"
-                width={180}
-                height={90}
-                className="h-16 w-auto object-contain mb-4"
-              />
-            </Link>
+          <div className="md:col-span-1">
+          <Link href="/" className="relative z-10 flex items-center">
+          <Image
+            src={Logo}
+            alt="El Cacique"
+            width={150}
+            height={150}
+            className="h-16 bg-gray-200 w-auto mr-3  rounded-xl object-contain"
+          />
+          <div className="flex flex-col">
+            <h1 className="text-xl md:text-2xl font-bold text-gray-200">El Cacique</h1>
+            <span className="text-gray-300 font-medium text-sm">Corralón y Ferretería</span>
+          </div>
+        </Link>
             <p className="text-gray-300 mt-4 max-w-sm">
               Materiales de calidad para tu proyecto. Somos especialistas en materiales de construcción y ferretería con los mejores precios y servicio.
             </p>
             <div className="flex space-x-4 mt-6">
+
               <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-white transition-colors"
-                aria-label="Facebook"
-              >
-                <svg
-                  className="h-6 w-6"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </a>
-              <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/caciquemateriales/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white transition-colors"
@@ -63,7 +50,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="https://wa.me/5491100000000"
+                href="https://wa.me/5491155962840"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white transition-colors"
@@ -84,56 +71,84 @@ export default function Footer() {
           </div>
 
           {/* Quick Links */}
-          <div>
+          <div className="md:col-span-1">
             <h3 className="text-lg font-medium mb-4 text-white border-b border-[#e32929] pb-2 inline-block">
               Enlaces Rápidos
             </h3>
-            <ul className="space-y-3">
-              <li>
-                <Link
-                  href="/"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Inicio
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/productos/obra-gruesa"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Obra Gruesa
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/productos/ferreteria"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Ferretería
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/empresa"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Empresa
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/cotiza"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Cotiza tu Proyecto
-                </Link>
-              </li>
-            </ul>
+            <div className="grid grid-cols-2 gap-4">
+              <ul className="space-y-3">
+                <li>
+                  <Link
+                    href="/"
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
+                    Inicio
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/productos/obra-gruesa"
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
+                    Obra Gruesa
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/productos/ferreteria"
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
+                    Ferretería
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/productos/terminaciones"
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
+                    Terminaciones
+                  </Link>
+                </li>
+              </ul>
+              <ul className="space-y-3">
+                <li>
+                  <Link
+                    href="/productos/electricidad"
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
+                    Electricidad
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/productos/pinturas"
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
+                    Pinturas
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/empresa"
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
+                    Empresa
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/cotiza"
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
+                    Cotiza tu Proyecto
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
 
           {/* Contact Information */}
-          <div>
+          <div className="md:col-span-1">
             <h3 className="text-lg font-medium mb-4 text-white border-b border-[#e32929] pb-2 inline-block">
               Contacto
             </h3>
@@ -159,7 +174,7 @@ export default function Footer() {
                   />
                 </svg>
                 <span className="text-gray-300">
-                  Av. Ejemplo 1234, Vicente López, Buenos Aires
+                Venezuela 4846, B1603ADJ Villa Martelli, Provincia de Buenos Aires
                 </span>
               </li>
               <li className="flex items-start">
@@ -176,7 +191,7 @@ export default function Footer() {
                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                   />
                 </svg>
-                <span className="text-gray-300">info@elcacique.com.ar</span>
+                <span className="text-gray-300">caciquemateriales@gmail.com</span>
               </li>
               <li className="flex items-start">
                 <svg
@@ -192,7 +207,7 @@ export default function Footer() {
                     d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                   />
                 </svg>
-                <span className="text-gray-300">(011) 4000-0000</span>
+                <span className="text-gray-300">+54 9 11 5596-2840</span>
               </li>
               <li className="flex items-start">
                 <svg
@@ -208,39 +223,55 @@ export default function Footer() {
                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <span className="text-gray-300">
-                  Lun-Vie: 8:00-18:00, Sáb: 8:00-13:00
-                </span>
+                <div className="text-gray-300">
+                  <p className="mb-1">8:00-16:30hs</p>
+      
+                </div>
               </li>
             </ul>
           </div>
-          
-          {/* Newsletter */}
-          <div>
-            <h3 className="text-lg font-medium mb-4 text-white border-b border-[#e32929] pb-2 inline-block">
-              Recibe Novedades
-            </h3>
-            <p className="text-gray-300 mb-4">
-              Suscríbete para recibir ofertas y novedades
-            </p>
-            <form className="flex flex-col sm:flex-row">
-              <input
-                type="email"
-                placeholder="Tu correo electrónico"
-                className="py-2 px-4 rounded-md focus:outline-none text-gray-800 w-full mb-2 sm:mb-0"
-              />
-              <button
-                type="submit"
-                className="bg-[#e32929] hover:bg-[#c81e1e] text-white py-2 px-4 rounded-md transition-colors sm:ml-2"
-              >
-                Suscribir
-              </button>
-            </form>
+        </div>
+        
+        {/* Certificaciones o sellos de calidad */}
+        <div className="border-t border-gray-700 pt-8 pb-6 mt-6">
+          <div className="flex flex-wrap justify-center items-center gap-8">
+            <div className="text-center">
+              <div className="bg-gray-200 rounded-full p-3 inline-block mb-2">
+                <svg className="h-8 w-8 text-[#e32929]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <p className="text-sm text-gray-400">Productos Certificados</p>
+            </div>
+            <div className="text-center">
+              <div className="bg-gray-200 rounded-full p-3 inline-block mb-2">
+                <svg className="h-8 w-8 text-[#e32929]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <p className="text-sm text-gray-400">Mejores Precios</p>
+            </div>
+            <div className="text-center">
+              <div className="bg-gray-200 rounded-full p-3 inline-block mb-2">
+                <svg className="h-8 w-8 text-[#e32929]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <p className="text-sm text-gray-400">Envíos Rápidos</p>
+            </div>
+            <div className="text-center">
+              <div className="bg-gray-200 rounded-full p-3 inline-block mb-2">
+                <svg className="h-8 w-8 text-[#e32929]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+              </div>
+              <p className="text-sm text-gray-400">Atención Personalizada</p>
+            </div>
           </div>
         </div>
         
         {/* Copyright */}
-        <div className="border-t border-gray-700 pt-6 mt-6 text-center">
+        <div className="border-t border-gray-700 pt-6 mt-2 text-center">
           <p className="text-gray-400 text-sm">
             © {new Date().getFullYear()} El Cacique Corralón y Ferretería. Todos los derechos reservados.
           </p>

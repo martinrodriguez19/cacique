@@ -16,16 +16,18 @@ const brands = [
   { id: 3, name: "El Hornero", logo: hornero },
   { id: 4, name: "Calal Bors", logo: calalbors },
   { id: 5, name: "Tuyango", logo: tuyango },
+  { id: 6, name: "Weber", logo: weber },
+  { id: 7, name: "Cementos Avellaneda", logo: cementos },
+  { id: 8, name: "El Hornero", logo: hornero },
+  { id: 9, name: "Calal Bors", logo: calalbors },
+  { id: 10, name: "Tuyango", logo: tuyango },
 ];
 
 export default function BrandsBanner() {
-  const allBrands = [...brands, ...brands]; // duplicado para scroll infinito
+  const allBrands = [...brands, ...brands, ...brands, ...brands]; // duplicado para scroll infinito
 
   return (
-    <div className="py-6 overflow-hidden">
-      <h3 className="text-2xl text-center font-medium text-gray-700 mb-8">
-        Trabajamos con las mejores marcas
-      </h3>
+    <div className=" overflow-hidden">
 
       <div className="relative w-full">
         {/* Gradientes laterales */}

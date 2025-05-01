@@ -4,6 +4,7 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import about from "../../../../public/images/corralon/c14.jpeg";
 
 export default function AboutUs() {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -44,22 +45,17 @@ export default function AboutUs() {
 
   return (
     <div>
-      <div className="text-center mb-12">
-        <h2 className="section-title">Sobre Nosotros</h2>
-        <p className="section-subtitle">
-          Conoce más sobre El Cacique Corralón y Ferretería
-        </p>
-      </div>
+
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
-          <h3 className="text-2xl font-semibold mb-4">
+          <h2 className="text-2xl font-semibold mb-4">
             Empresa
-          </h3>
+          </h2>
           <p className="text-gray-600 mb-6">
             En El Cacique nos dedicamos a proveer materiales de construcción y 
             ferretería de alta calidad para profesionales y particulares. 
-            Ubicados en Vicente López, atendemos a toda la zona norte del 
+            Ubicados en Villa Martelli, atendemos a toda la zona norte del 
             Gran Buenos Aires y CABA.
           </p>
           <p className="text-gray-600 mb-6">
@@ -68,20 +64,7 @@ export default function AboutUs() {
             y el mejor servicio de logística y entrega.
           </p>
           
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-            <div className="bg-gray-50 p-4 rounded-lg text-center">
-              <div className="text-3xl font-bold text-[#e32929] mb-2">5000+</div>
-              <div className="text-gray-600 text-sm">
-                Clientes satisfechos
-              </div>
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg text-center">
-              <div className="text-3xl font-bold text-[#e32929] mb-2">10000+</div>
-              <div className="text-gray-600 text-sm">
-                Proyectos realizados
-              </div>
-            </div>
-          </div>
+          
           
           <Link 
             href="/empresa" 
@@ -107,37 +90,39 @@ export default function AboutUs() {
           ref={mapRef} 
           className="rounded-lg overflow-hidden shadow-lg h-96 relative opacity-0"
         >
-          {/* Placeholder for map. In production, replace with actual map */}
-          <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
-            <svg
-              className="w-12 h-12 text-gray-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-            </svg>
-          </div>
-          <Image 
-            src="/images/map-placeholder.jpg"
-            alt="Ubicación de El Cacique"
-            fill
-            className="object-cover"
-          />
-          <div className="absolute bottom-4 left-4 bg-white p-3 rounded-lg shadow-md">
+          {/* Implementación de mapa con Google Maps iframe */}
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3286.869336555476!2d-58.507512584772976!3d-34.53885938047565!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcb6e2faa89bd7%3A0x657a43f3b04d8eef!2sVenezuela%204846%2C%20B1603ADJ%20Villa%20Martelli%2C%20Provincia%20de%20Buenos%20Aires!5e0!3m2!1ses!2sar!4v1651244750921!5m2!1ses!2sar" 
+            className="absolute inset-0 w-full h-full border-0" 
+            allowFullScreen 
+            loading="lazy" 
+            referrerPolicy="no-referrer-when-downgrade"
+            title="Ubicación de El Cacique Corralón y Ferretería"
+          ></iframe>
+          
+          <div className="absolute bottom-4 left-4 bg-white p-3 rounded-lg shadow-md z-10">
             <h4 className="font-semibold text-sm">El Cacique Corralón y Ferretería</h4>
-            <p className="text-xs text-gray-600">Av. Ejemplo 1234, Vicente López</p>
+            <p className="text-xs text-gray-600">Venezuela 4846, B1603ADJ Villa Martelli, Provincia de Buenos Aires</p>
+            <a 
+              href="https://goo.gl/maps/RZ5J7XqKZ5J5Lxq39" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-xs text-[#e32929] hover:text-[#c81e1e] mt-1 inline-flex items-center"
+            >
+              Ver en Google Maps
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className="h-3 w-3 ml-1" 
+                viewBox="0 0 20 20" 
+                fill="currentColor"
+              >
+                <path 
+                  fillRule="evenodd" 
+                  d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" 
+                  clipRule="evenodd" 
+                />
+              </svg>
+            </a>
           </div>
         </div>
       </div>
@@ -181,7 +166,7 @@ export default function AboutUs() {
           <div className="relative h-64 md:h-auto">
             <div className="absolute inset-0 bg-gradient-to-r from-gray-900/60 to-transparent z-10"></div>
             <Image
-              src="/images/careers.jpg" 
+              src={about} 
               alt="Trabaja con nosotros"
               fill
               className="object-cover"
@@ -190,7 +175,8 @@ export default function AboutUs() {
         </div>
       </div>
       
-     
+      
+
     </div>
   );
 }

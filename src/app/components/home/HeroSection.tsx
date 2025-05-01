@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import hero from "../../../../public/images/corralon/c1.jpeg";
+import hero from "../../../../public/images/corralon/c9.jpeg";
 import envios from "../../../../public/images/corralon/c13.jpeg";
 const slides = [
   {

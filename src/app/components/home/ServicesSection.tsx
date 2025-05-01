@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import servicio from "../../../../public/images/corralon/c1.jpeg";
 
 const services = [
   {
@@ -142,7 +143,7 @@ export default function ServicesSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2">
           <div className="relative h-64 lg:h-auto">
             <Image
-              src="/images/delivery-truck.jpg"
+              src={servicio}
               alt="Servicio de entrega"
               fill
               className="object-cover"

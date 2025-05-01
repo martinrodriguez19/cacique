@@ -22,7 +22,7 @@ export default function Home() {
       </Suspense>
       
       {/* Brands Banner */}
-      <section className="py-10 bg-gray-50">
+      <section className="py-2 bg-gray-50">
         <div className="container-custom">
           <BrandsBanner />
         </div>
