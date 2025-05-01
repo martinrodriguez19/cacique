@@ -2,7 +2,6 @@
 // Página dinámica para categorías de productos conectada a la base de datos
 
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import CategoryProductsPage from '@/app/components/CategoryProductsPage';
 import { getCategories } from '@/app/lib/services/api';
 
