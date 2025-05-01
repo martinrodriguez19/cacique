@@ -35,8 +35,11 @@ export default function ProductDetailPage({ params }: ProductDetailProps) {
     const fetchProductDetails = async () => {
       setIsLoading(true);
       try {
+        // Opciones de caché para la solicitud del lado del cliente
+        const clientOptions = { cache: 'no-store' as const };
+        
         // Primero obtener la categoría
-        const categories = await getCategories();
+        const categories = await getCategories(undefined, clientOptions);
         const foundCategory = categories.find(cat => cat.slug === categorySlug);
         
         if (!foundCategory) {
@@ -48,7 +51,7 @@ export default function ProductDetailPage({ params }: ProductDetailProps) {
         setCategory(foundCategory);
         
         // Obtener todos los productos de la categoría
-        const productsInCategory = await getProducts(categorySlug);
+        const productsInCategory = await getProducts(categorySlug, undefined, clientOptions);
         
         // Buscar el producto por su slug
         const foundProduct = productsInCategory.find(p => p.slug === productSlug);
@@ -111,9 +114,9 @@ export default function ProductDetailPage({ params }: ProductDetailProps) {
   };
 
   return (
-    <div className="pt-24 ">
+    <div className="pt-24 pb-16">
       <Navbar />
-      <div className="container-custom pb-16">
+      <div className="container-custom">
         {/* Breadcrumbs */}
         <nav className="mb-8">
           <ol className="flex items-center text-sm">

@@ -1,24 +1,10 @@
 // app/productos/[categorySlug]/page.tsx
-// Página dinámica para categorías de productos conectada a la base de datos
-
 import { Metadata } from 'next';
 import CategoryProductsPage from '@/app/components/CategoryProductsPage';
 import { getCategories } from '@/app/lib/services/api';
 
-export const dynamicParams = true;
-
-// Generar rutas estáticas para las categorías conocidas
-export async function generateStaticParams() {
-  try {
-    const categories = await getCategories();
-    return categories.map((category) => ({
-      categorySlug: category.slug,
-    }));
-  } catch (error) {
-    console.error('Error generating static paths:', error);
-    return [];
-  }
-}
+// Indica a Next.js que esta es una página dinámica
+export const dynamic = 'force-dynamic';
 
 // Metadatos dinámicos basados en la categoría
 export async function generateMetadata({ params }: { params: { categorySlug: string } }): Promise<Metadata> {
@@ -54,12 +40,14 @@ export async function generateMetadata({ params }: { params: { categorySlug: str
 
 // Función que renderiza el componente cliente CategoryProductsPage
 export default async function CategoryPage({ params }: { params: { categorySlug: string } }) {
-  // Ahora la función es asíncrona (async) para poder esperar a que los params se resuelvan
-  
-  // Convertimos los params a un objeto simple para pasárselo al componente cliente
-  const safeParams = {
+  // Extraer explícitamente los parámetros y crear un nuevo objeto literal
+  const categoryParams = {
     categorySlug: params.categorySlug
   };
   
-  return <CategoryProductsPage params={safeParams} />;
+  // Imprimir para depuración
+  console.log("CategoryPage Server Component - params:", categoryParams);
+  
+  // Pasar un objeto literal simple con la propiedad categorySlug
+  return <CategoryProductsPage params={categoryParams} />;
 }

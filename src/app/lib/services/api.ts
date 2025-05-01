@@ -10,32 +10,42 @@ type ApiResponse<T> = {
   error?: string;
 };
 
-// Función para construir la URL base
-const getBaseUrl = () => {
-  // Verificar si estamos en el navegador o en el servidor
-  if (typeof window !== 'undefined') {
-    // Cliente (navegador)
-    return window.location.origin;
-  } else {
-    // Servidor
-    // Usa la variable de entorno o un valor predeterminado
-    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+// Opciones para la función de obtención de datos
+interface FetchOptions {
+  cache?: 'force-cache' | 'no-store';
+  next?: {
+    revalidate?: number;
+  };
+}
+
+// Función para obtener URL base de la API
+function getBaseUrl() {
+  // En el servidor, no hay objeto 'window' - usar una URL absoluta o relativa
+  if (typeof window === 'undefined') {
+    // En producción, usaríamos la URL del sitio
+    // return 'https://www.tucorralon.com';
+    
+    // Para desarrollo, usamos una URL relativa
+    return '';
   }
-};
+  
+  // En el cliente, podemos usar window.location.origin
+  return window.location.origin;
+}
 
 // Función para obtener todas las categorías
-export async function getCategories(featured?: boolean): Promise<ICategory[]> {
+export async function getCategories(featured?: boolean, options?: FetchOptions): Promise<ICategory[]> {
   try {
     const baseUrl = getBaseUrl();
     const url = new URL('/api/admin/categories', baseUrl);
-    
     if (featured) url.searchParams.append('featured', 'true');
 
-    const response = await fetch(url.toString(), { 
-      // Configuración para asegurar que funciona en SSR
-      cache: 'no-store' 
-    });
-    
+    // Configurar opciones de fetch para caché
+    const fetchOptions: RequestInit & { next?: { revalidate?: number } } = {
+      ...(options || {})
+    };
+
+    const response = await fetch(url.toString(), fetchOptions);
     const result: ApiResponse<ICategory[]> = await response.json();
 
     if (!result.success) {
@@ -50,13 +60,14 @@ export async function getCategories(featured?: boolean): Promise<ICategory[]> {
 }
 
 // Función para obtener una categoría por ID
-export async function getCategoryById(id: string): Promise<ICategory | null> {
+export async function getCategoryById(id: string, options?: FetchOptions): Promise<ICategory | null> {
   try {
     const baseUrl = getBaseUrl();
-    const response = await fetch(`${baseUrl}/api/admin/categories/${id}`, { 
-      cache: 'no-store' 
-    });
+    const fetchOptions: RequestInit & { next?: { revalidate?: number } } = {
+      ...(options || {})
+    };
     
+    const response = await fetch(`${baseUrl}/api/admin/categories/${id}`, fetchOptions);
     const result: ApiResponse<ICategory> = await response.json();
 
     if (!result.success) {
@@ -71,18 +82,19 @@ export async function getCategoryById(id: string): Promise<ICategory | null> {
 }
 
 // Función para obtener productos
-export async function getProducts(category?: string, featured?: boolean): Promise<IProduct[]> {
+export async function getProducts(category?: string, featured?: boolean, options?: FetchOptions): Promise<IProduct[]> {
   try {
     const baseUrl = getBaseUrl();
     const url = new URL('/api/admin/products', baseUrl);
-    
     if (category) url.searchParams.append('category', category);
     if (featured) url.searchParams.append('featured', 'true');
 
-    const response = await fetch(url.toString(), { 
-      cache: 'no-store' 
-    });
-    
+    // Configurar opciones de fetch para caché
+    const fetchOptions: RequestInit & { next?: { revalidate?: number } } = {
+      ...(options || {})
+    };
+
+    const response = await fetch(url.toString(), fetchOptions);
     const result: ApiResponse<IProduct[]> = await response.json();
 
     if (!result.success) {
@@ -97,13 +109,14 @@ export async function getProducts(category?: string, featured?: boolean): Promis
 }
 
 // Función para obtener un producto por ID
-export async function getProductById(id: string): Promise<IProduct | null> {
+export async function getProductById(id: string, options?: FetchOptions): Promise<IProduct | null> {
   try {
     const baseUrl = getBaseUrl();
-    const response = await fetch(`${baseUrl}/api/admin/products/${id}`, { 
-      cache: 'no-store' 
-    });
+    const fetchOptions: RequestInit & { next?: { revalidate?: number } } = {
+      ...(options || {})
+    };
     
+    const response = await fetch(`${baseUrl}/api/admin/products/${id}`, fetchOptions);
     const result: ApiResponse<IProduct> = await response.json();
 
     if (!result.success) {

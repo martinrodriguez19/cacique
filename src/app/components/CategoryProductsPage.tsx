@@ -38,8 +38,11 @@ export default function CategoryProductsPage({ params }: CategoryProductsPagePro
     const fetchCategoryAndProducts = async () => {
       setIsLoading(true);
       try {
+        // Opciones de caché para la solicitud del lado del cliente
+        const clientOptions = { cache: 'no-store' as const };
+        
         // Obtener todas las categorías
-        const categories = await getCategories();
+        const categories = await getCategories(undefined, clientOptions);
         
         // Buscar la categoría actual por slug
         const currentCategory = categories.find(cat => cat.slug === categorySlug);
@@ -48,7 +51,7 @@ export default function CategoryProductsPage({ params }: CategoryProductsPagePro
           setCategory(currentCategory);
           
           // Obtener productos de esta categoría
-          const categoryProducts = await getProducts(currentCategory.slug);
+          const categoryProducts = await getProducts(currentCategory.slug, undefined, clientOptions);
           setProducts(categoryProducts);
           
           // Calcular el total de páginas
@@ -165,9 +168,9 @@ export default function CategoryProductsPage({ params }: CategoryProductsPagePro
   };
 
   return (
-    <div className="pt-24 " id="category-products">
+    <div className="pt-24 pb-16" id="category-products">
       <Navbar />
-      <div className="container-custom pb-16">
+      <div className="container-custom">
         {/* Breadcrumbs */}
         <nav className="mb-8">
           <ol className="flex items-center text-sm">

@@ -1,35 +1,10 @@
 // app/productos/[categorySlug]/[productSlug]/page.tsx
-// Página de detalle de producto conectada a la base de datos
-
 import ProductDetailPage from '@/app/components/ProductDetailPage';
 import { Metadata } from 'next';
 import { getCategories, getProducts } from '@/app/lib/services/api';
 
-export const dynamicParams = true;
-
-// Generar rutas estáticas para los productos conocidos
-export async function generateStaticParams() {
-  try {
-    const categories = await getCategories();
-    const paths = [];
-    
-    for (const category of categories) {
-      const products = await getProducts(category.slug);
-      
-      for (const product of products) {
-        paths.push({
-          categorySlug: category.slug,
-          productSlug: product.slug,
-        });
-      }
-    }
-    
-    return paths;
-  } catch (error) {
-    console.error('Error generating static paths:', error);
-    return [];
-  }
-}
+// Indica a Next.js que esta es una página dinámica
+export const dynamic = 'force-dynamic';
 
 // Metadatos dinámicos basados en el producto
 export async function generateMetadata({ 
@@ -81,13 +56,12 @@ export async function generateMetadata({
 }
 
 // Función que renderiza el componente cliente ProductDetailPage
-export default async function ProductPage({ 
+export default function ProductPage({ 
   params 
 }: { 
   params: { categorySlug: string; productSlug: string } 
 }) {
-  // Extraer explícitamente los parámetros y crear un nuevo objeto
-  // Esto evita pasar el objeto params directamente, que podría ser un proxy reactivo
+  // Extraer explícitamente los parámetros y crear un nuevo objeto literal
   const productParams = {
     categorySlug: params.categorySlug,
     productSlug: params.productSlug
