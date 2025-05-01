@@ -470,22 +470,9 @@ export default function Navbar() {
                   className="block py-2 text-gray-600 hover:text-[#e32929] border-b border-gray-100"
                   onClick={toggleMobileMenu}
                 >
-                  Panel de Admin
+                  Login
                 </Link>
-                <Link
-                  href="/mi-cuenta"
-                  className="block py-2 text-gray-600 hover:text-[#e32929] border-b border-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Mi Cuenta
-                </Link>
-                <Link
-                  href="/mis-pedidos"
-                  className="block py-2 text-gray-600 hover:text-[#e32929] border-b border-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Mis Pedidos
-                </Link>
+                
               </div>
             </div>
           </div>
