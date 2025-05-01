@@ -114,9 +114,9 @@ export default function ProductDetailPage({ params }: ProductDetailProps) {
   };
 
   return (
-    <div className="pt-24 pb-16">
+    <div className="pt-24">
       <Navbar />
-      <div className="container-custom">
+      <div className="container-custom  pb-16">
         {/* Breadcrumbs */}
         <nav className="mb-8">
           <ol className="flex items-center text-sm">

@@ -168,9 +168,9 @@ export default function CategoryProductsPage({ params }: CategoryProductsPagePro
   };
 
   return (
-    <div className="pt-24 pb-16" id="category-products">
+    <div className="pt-24 " id="category-products">
       <Navbar />
-      <div className="container-custom">
+      <div className="container-custom  pb-16">
         {/* Breadcrumbs */}
         <nav className="mb-8">
           <ol className="flex items-center text-sm">
