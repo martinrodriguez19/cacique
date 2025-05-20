@@ -32,7 +32,7 @@ export default function Home() {
       <section className="py-16">
         <div className="container-custom">
           <h2 className="text-3xl md:text-4xl font-semibold text-center mb-4 font-poppins">
-            Materiales para tu Obra
+            Materiales Destacados para tu Obra
           </h2>
           <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
             Contamos con todo lo que necesitas para tu construcción o reforma, desde cimientos hasta terminaciones.
