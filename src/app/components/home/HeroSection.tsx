@@ -43,7 +43,7 @@ export default function HeroSection() {
   };
 
   return (
-    <div className="relative h-[600px] md:h-[650px] w-full overflow-hidden">
+    <div className="relative pt-16 h-[600px] md:h-[650px] w-full overflow-hidden">
       {/* Slide background */}
       {slides.map((slide, index) => (
         <div
