@@ -50,18 +50,16 @@ export default function AboutUs() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
           <h2 className="text-2xl font-semibold mb-4">
-            Empresa
+            Acerca de nosotros
           </h2>
           <p className="text-gray-600 mb-6">
-            En El Cacique nos dedicamos a proveer materiales de construcción y 
-            ferretería de alta calidad para profesionales y particulares. 
-            Ubicados en Villa Martelli, atendemos a toda la zona norte del 
-            Gran Buenos Aires y CABA.
+Nos especializamos en la venta de materiales para la construcción, con un amplio stock disponible para retiro en nuestra sucursal o con opción de entrega a domicilio en CABA y Gran Buenos Aires.
+
           </p>
           <p className="text-gray-600 mb-6">
-            Nuestra misión es ser el socio estratégico en tus proyectos, 
-            ofreciendo productos de calidad, asesoramiento especializado 
-            y el mejor servicio de logística y entrega.
+   
+Además, brindamos un servicio de transporte con hidrogrúa propio.
+Nuestro objetivo es ofrecer soluciones prácticas, seguras y eficientes para cada etapa de tu proyecto.
           </p>
           
           

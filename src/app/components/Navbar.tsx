@@ -126,7 +126,7 @@ export default function Navbar() {
               pathname === "/empresa" ? "text-[#e32929]" : "text-gray-800"
             }`}
           >
-            Empresa
+             Nosotros
           </Link>
           <Link
             href="/cotiza"
