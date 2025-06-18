@@ -41,11 +41,11 @@ export default function Footer() {
           />
           <div className="flex flex-col">
             <h1 className="text-xl md:text-2xl font-bold text-gray-200">El Cacique</h1>
-            <span className="text-gray-300 font-medium text-sm">Corralón y Ferretería</span>
+            <span className="text-gray-300 font-medium text-sm">Materiales de Construcción</span>
           </div>
         </Link>
             <p className="text-gray-300 mt-4 max-w-sm">
-              Materiales de calidad para tu proyecto. Somos especialistas en materiales de construcción y ferretería con los mejores precios y servicio.
+              Materiales de calidad para tu proyecto. Somos especialistas en materiales de construcción con los mejores precios y servicio.
             </p>
             <div className="flex space-x-4 mt-6">
               <a

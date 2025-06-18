@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import about from "../../../public/images/corralon/c11.jpeg"
+import about from "../../../public/images/corralon/c10.jpeg"
 import empresa from "../../../public/images/corralon/c16.jpeg"
 
 export default function EmpresaPage() {
@@ -23,7 +23,7 @@ export default function EmpresaPage() {
           <div className="absolute inset-0 z-20 flex items-center justify-center">
             <div className="text-center">
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                Nuestra Empresa
+                Acerca de nosotros
               </h1>
             </div>
           </div>
@@ -32,7 +32,7 @@ export default function EmpresaPage() {
         {/* Company History */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
           <div>
-            <h2 className="text-3xl font-semibold mb-6">Nosotros</h2>
+            <h2 className="text-3xl font-semibold mb-6">Quienes somos?</h2>
             <p className="text-gray-600 mb-4">
       
               Con el paso de los años, nos hemos consolidado como uno de los corralones de referencia 
@@ -78,7 +78,7 @@ export default function EmpresaPage() {
               </div>
               <h3 className="text-xl font-semibold mb-3">Misión</h3>
               <p className="text-gray-600">
-                Brindar soluciones integrales en materiales de construcción y ferretería, 
+                Brindar soluciones integrales en materiales de construcción, 
                 ofreciendo productos de calidad, asesoramiento profesional y un servicio 
                 de excelencia para contribuir al éxito de los proyectos de nuestros clientes.
               </p>
@@ -101,7 +101,7 @@ export default function EmpresaPage() {
               </div>
               <h3 className="text-xl font-semibold mb-3">Visión</h3>
               <p className="text-gray-600">
-                Ser reconocidos como el corralón y ferretería líder en la zona norte de Buenos Aires, 
+                Ser reconocidos como el corralón líder en la zona norte de Buenos Aires, 
                 distinguiéndonos por nuestra amplia variedad de productos, precios competitivos, 
                 servicio personalizado y compromiso con la satisfacción de nuestros clientes.
               </p>

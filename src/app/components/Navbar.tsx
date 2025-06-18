@@ -97,7 +97,7 @@ export default function Navbar() {
           />
           <div className="flex flex-col">
             <h1 className="text-xl md:text-2xl font-bold text-gray-800">El Cacique</h1>
-            <span className="text-gray-700 font-medium text-sm">Corralón y Ferretería</span>
+            <span className="text-gray-700 font-medium text-sm">Materiales de Construcción</span>
           </div>
         </Link>
 
@@ -111,71 +111,15 @@ export default function Navbar() {
           >
             Inicio
           </Link>
-          <div className="relative group" ref={productMenuRef}>
-            <button
-              className={`flex items-center font-medium hover:text-[#e32929] transition-colors ${
-                pathname.includes("/productos") || pathname.includes("/catalogo") 
-                  ? "text-[#e32929]" 
-                  : "text-gray-800"
-              }`}
-              onClick={toggleProductMenu}
-            >
-              Productos
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className={`h-4 w-4 ml-1 transition-transform ${
-                  productMenuOpen ? "rotate-180" : ""
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-            {/* Dropdown for Products */}
-            <div
-              className={`absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all duration-200 ${
-                productMenuOpen
-                  ? "opacity-100 translate-y-0 pointer-events-auto"
-                  : "opacity-0 -translate-y-2 pointer-events-none"
-              }`}
-            >
-              <div className="py-1">
-                <Link
-                  href="/productos"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#e32929]"
-                  onClick={() => setProductMenuOpen(false)}
-                >
-                  Todas las categorías
-                </Link>
-                <div className="border-t border-gray-100 my-1"></div>
-                
-                {/* Mostrar categorías dinámicas */}
-                {isLoading ? (
-                  <div className="px-4 py-2 text-sm text-gray-500">Cargando...</div>
-                ) : (
-                  categories.map((category) => (
                     <Link
-                      key={category._id}
-                      href={`/productos/${category.slug}`}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#e32929]"
-                      onClick={() => setProductMenuOpen(false)}
-                    >
-                      {category.name}
-                    </Link>
-                  ))
-                )}
-                
-                <div className="border-t border-gray-100 my-1"></div>
-              </div>
-            </div>
-          </div>
+            href="/productos"
+            className={`font-medium hover:text-[#e32929] transition-colors ${
+              pathname === "/productos" ? "text-[#e32929]" : "text-gray-800"
+            }`}
+          >
+            Productos
+          </Link>
+        
           <Link
             href="/empresa"
             className={`font-medium hover:text-[#e32929] transition-colors ${
