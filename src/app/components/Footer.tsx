@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getCategories } from "@/app/lib/services/api";
 import { ICategory } from "@/app/lib/models/Category";
-import Logo from "../../../public/images/logo1.png";
+const Logo = "/images/logo1.png";
 
 export default function Footer() {
   const [categories, setCategories] = useState<ICategory[]>([]);

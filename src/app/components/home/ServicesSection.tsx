@@ -108,7 +108,7 @@ export default function ServicesSection() {
       }
     );
 
-    const elements = document.querySelectorAll(".service-card");
+    const elements = document.querySelectorAll(".service-card, .commitment-section");
     elements.forEach((el) => observer.observe(el));
 
     return () => {
@@ -119,8 +119,13 @@ export default function ServicesSection() {
   return (
     <div ref={sectionRef}>
       <div className="text-center mb-12">
-        <h2 className="section-title">Nuestros Servicios</h2>
-        <p className="section-subtitle">
+        <span className="inline-block px-4 py-1 bg-white/10 text-[#e32929] rounded-full text-sm font-medium mb-4">
+          Por qué elegirnos
+        </span>
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 font-poppins">
+          Nuestros Servicios
+        </h2>
+        <p className="text-gray-300 text-lg max-w-2xl mx-auto">
           Nos destacamos por ofrecer soluciones completas para tu proyecto
         </p>
       </div>
@@ -129,19 +134,22 @@ export default function ServicesSection() {
         {services.map((service, index) => (
           <div
             key={service.id}
-            className="service-card bg-white p-6 rounded-lg shadow-md border-t-4 border-[#e32929] transform hover:-translate-y-2 transition-transform duration-300 opacity-0"
+            className="service-card group bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:bg-white/20 hover:border-[#e32929]/50 transform hover:-translate-y-2 transition-all duration-300 opacity-0"
             style={{ animationDelay: `${index * 150}ms` }}
           >
-            <div className="mb-4">{service.icon}</div>
-            <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
-            <p className="text-gray-600">{service.description}</p>
+            <div className="mb-4 p-3 bg-white/10 rounded-lg inline-block group-hover:bg-[#e32929]/20 transition-colors">
+              {service.icon}
+            </div>
+            <h3 className="text-xl font-semibold mb-3 text-white">{service.title}</h3>
+            <p className="text-gray-300">{service.description}</p>
           </div>
         ))}
       </div>
 
-      <div className="mt-16 bg-white rounded-lg shadow-lg overflow-hidden">
+      <div className="commitment-section mt-20 bg-white/5 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/10 opacity-0">
         <div className="grid grid-cols-1 lg:grid-cols-2">
           <div className="relative h-64 lg:h-auto">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10"></div>
             <Image
               src={servicio}
               alt="Servicio de entrega"
@@ -150,55 +158,66 @@ export default function ServicesSection() {
             />
           </div>
           <div className="p-8 lg:p-12 flex flex-col justify-center">
-            <h3 className="text-2xl font-semibold mb-4">
+            <div className="inline-flex items-center mb-6">
+              <div className="h-1 w-12 bg-[#e32929] mr-3"></div>
+              <span className="text-[#e32929] font-medium uppercase tracking-wider text-sm">
+                Compromiso
+              </span>
+            </div>
+            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
               Comprometidos con tu Proyecto
             </h3>
-            <p className="text-gray-600 mb-6">
-              En El Cacique nos especializamos en proveer materiales de construcción de calidad y servicio excepcional. 
-            
+            <p className="text-gray-300 mb-6">
+              En El Cacique nos especializamos en proveer materiales de construcción de calidad y servicio excepcional.
             </p>
-            <ul className="space-y-3">
-              <li className="flex items-start">
-                <svg
-                  className="w-5 h-5 text-[#e32929] mr-2 mt-1"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span>Amplio stock disponible para entrega inmediata</span>
+            <ul className="space-y-4">
+              <li className="flex items-start group">
+                <div className="p-1 bg-[#e32929]/20 rounded-full mr-3 mt-0.5 group-hover:bg-[#e32929]/30 transition-colors">
+                  <svg
+                    className="w-4 h-4 text-[#e32929]"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <span className="text-gray-300">Amplio stock disponible para entrega inmediata</span>
               </li>
-              <li className="flex items-start">
-                <svg
-                  className="w-5 h-5 text-[#e32929] mr-2 mt-1"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span>Servicio de asesoramiento técnico personalizado</span>
+              <li className="flex items-start group">
+                <div className="p-1 bg-[#e32929]/20 rounded-full mr-3 mt-0.5 group-hover:bg-[#e32929]/30 transition-colors">
+                  <svg
+                    className="w-4 h-4 text-[#e32929]"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <span className="text-gray-300">Servicio de asesoramiento técnico personalizado</span>
               </li>
-              <li className="flex items-start">
-                <svg
-                  className="w-5 h-5 text-[#e32929] mr-2 mt-1"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span>Entregas programadas según el avance de tu obra</span>
+              <li className="flex items-start group">
+                <div className="p-1 bg-[#e32929]/20 rounded-full mr-3 mt-0.5 group-hover:bg-[#e32929]/30 transition-colors">
+                  <svg
+                    className="w-4 h-4 text-[#e32929]"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <span className="text-gray-300">Entregas programadas según el avance de tu obra</span>
               </li>
             </ul>
           </div>

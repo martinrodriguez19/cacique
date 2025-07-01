@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useRef } from "react";
@@ -9,7 +8,6 @@ import hornero from "../../../../public/images/marcas/hornero.png";
 import calalbors from "../../../../public/images/marcas/calalbors.png";
 import tuyango from "../../../../public/images/marcas/tuyango.png";
 
-// Lista de marcas
 const brands = [
   { id: 1, name: "Weber", logo: weber },
   { id: 2, name: "Cementos Avellaneda", logo: cementos },
@@ -24,26 +22,29 @@ const brands = [
 ];
 
 export default function BrandsBanner() {
-  const allBrands = [...brands, ...brands, ...brands, ...brands]; // duplicado para scroll infinito
+  const allBrands = [...brands, ...brands, ...brands, ...brands];
 
   return (
-    <div className=" overflow-hidden">
+    <div className="overflow-hidden py-4">
+      <div className="text-center mb-6">
+        <h3 className="text-lg font-medium text-gray-600">Trabajamos con las mejores marcas</h3>
+      </div>
 
       <div className="relative w-full">
-        {/* Gradientes laterales */}
-        <div className="absolute left-0 top-0 w-8 h-full bg-gradient-to-r from-white to-transparent z-10"></div>
-        <div className="absolute right-0 top-0 w-8 h-full bg-gradient-to-l from-white to-transparent z-10"></div>
+        {/* Gradientes laterales mejorados */}
+        <div className="absolute left-0 top-0 w-24 h-full bg-gradient-to-r from-white via-white/80 to-transparent z-10"></div>
+        <div className="absolute right-0 top-0 w-24 h-full bg-gradient-to-l from-white via-white/80 to-transparent z-10"></div>
 
-        <div className="flex w-max animate-scroll whitespace-nowrap space-x-12">
+        <div className="flex w-max animate-scroll whitespace-nowrap space-x-16">
           {allBrands.map((brand, index) => (
-            <div key={`${brand.id}-${index}`} className="flex-shrink-0">
-              <div className="relative w-24 h-16 md:w-32 md:h-20 grayscale hover:grayscale-0 transition-all duration-300">
+            <div key={`${brand.id}-${index}`} className="flex-shrink-0 group">
+              <div className="relative w-28 h-20 md:w-36 md:h-24 grayscale hover:grayscale-0 transition-all duration-500 transform hover:scale-110">
                 <Image
                   src={brand.logo}
                   alt={brand.name}
                   fill
-                  className="object-contain"
-                  sizes="(max-width: 768px) 96px, 128px"
+                  className="object-contain filter drop-shadow-md"
+                  sizes="(max-width: 768px) 112px, 144px"
                 />
               </div>
             </div>
