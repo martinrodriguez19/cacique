@@ -1,6 +1,5 @@
 "use client";
 
-import { useRef } from "react";
 import Image from "next/image";
 import weber from "../../../../public/images/marcas/weber.png";
 import cementos from "../../../../public/images/marcas/cementos.png";
