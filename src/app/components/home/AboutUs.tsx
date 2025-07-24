@@ -4,7 +4,7 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-const about = "/images/corralon/c14.jpeg";
+const about = "/images/h-3.jpeg";
 
 export default function AboutUs() {
   const mapRef = useRef<HTMLDivElement>(null);

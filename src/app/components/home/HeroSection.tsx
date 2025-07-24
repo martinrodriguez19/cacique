@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import hero from "../../../../public/images/hero.jpg";
-import envios from "../../../../public/images/corralon/c13.jpeg";
+import envios from "../../../../public/images/h-3.jpeg";
 
 const slides = [
   {
