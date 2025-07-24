@@ -65,8 +65,10 @@ export default function SearchResultsPage() {
   const resultCategories = [...new Set(products.map(product => product.category))];
   
   return (
+    <>
+      <Navbar   />
     <div className="pt-24 pb-16">
-      <Navbar />
+     
       <div className="container-custom">
         {/* Hero Section */}
         <div className="mb-12">
@@ -273,6 +275,6 @@ export default function SearchResultsPage() {
         </div>
       </div>
       <Footer />
-    </div>
+    </div></>
   );
 }

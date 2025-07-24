@@ -8,8 +8,9 @@ import FullCatalog from "@/app/components/FullCatalog";
 
 export default function CatalogoPage() {
   return (
+    <><Navbar />
     <div className="pt-24 pb-16">
-      <Navbar />
+      
       <div className="container-custom">
         {/* Hero Section */}
         <div className="text-center mb-12">
@@ -49,6 +50,6 @@ export default function CatalogoPage() {
         </div>
       </div>
       <Footer />
-    </div>
+    </div></>
   );
 }

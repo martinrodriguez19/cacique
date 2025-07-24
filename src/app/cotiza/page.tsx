@@ -9,8 +9,9 @@ import empresa from "../../../public/images/corralon/c16.jpeg"
 
 export default function CotizaPage() {
   return (
+    <><Navbar />
     <div className="pt-36 ">
-      <Navbar />
+      
       <div className="container-custom pb-16">
         {/* Hero Section */}
         <div className="text-center mb-12">
@@ -125,5 +126,6 @@ export default function CotizaPage() {
       </div>
       <Footer />
     </div>
+    </>
   );
 }

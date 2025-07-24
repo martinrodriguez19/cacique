@@ -130,8 +130,9 @@ export default function TrabajaConNosotros() {
   };
 
   return (
+    <><Navbar />
     <div className="pt-40 ">
-      <Navbar />
+      
       <div className="container-custom pb-16">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
@@ -383,6 +384,6 @@ export default function TrabajaConNosotros() {
         </div>
       </div>
       <Footer />
-    </div>
+    </div></>
   );
 }

@@ -7,8 +7,9 @@ import empresa from "../../../public/images/corralon/c16.jpeg"
 export default function EmpresaPage() {
   
   return (
+    <> <Navbar />
     <div className="pt-24 ">
-      <Navbar />
+     
       <div className="container-custom pb-16">
         {/* Hero Section */}
         <div className="relative mb-16 overflow-hidden rounded-xl">
@@ -258,6 +259,6 @@ export default function EmpresaPage() {
         </div>
       </div>
       <Footer />
-    </div>
+    </div></>
   );
 }

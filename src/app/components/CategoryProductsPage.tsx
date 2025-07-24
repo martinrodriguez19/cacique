@@ -168,8 +168,9 @@ export default function CategoryProductsPage({ params }: CategoryProductsPagePro
   };
 
   return (
+    <><Navbar />
     <div className="pt-24 " id="category-products">
-      <Navbar />
+      
       <div className="container-custom  pb-16">
         {/* Breadcrumbs */}
         <nav className="mb-8">
@@ -393,6 +394,6 @@ export default function CategoryProductsPage({ params }: CategoryProductsPagePro
         </div>
       </div>
       <Footer />
-    </div>
+    </div></>
   );
 }

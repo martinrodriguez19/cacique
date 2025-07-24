@@ -114,8 +114,9 @@ export default function ProductDetailPage({ params }: ProductDetailProps) {
   };
 
   return (
+    <><Navbar />
     <div className="pt-24">
-      <Navbar />
+      
       <div className="container-custom  pb-16">
         {/* Breadcrumbs */}
         <nav className="mb-8">
@@ -318,6 +319,6 @@ export default function ProductDetailPage({ params }: ProductDetailProps) {
         )}
       </div>
       <Footer />
-    </div>
+    </div></>
   );
 }

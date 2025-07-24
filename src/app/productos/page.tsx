@@ -29,8 +29,10 @@ export default function ProductosPage() {
   }, []);
 
   return (
+    <>     
+     <Navbar />
     <div className="pt-24 ">
-      <Navbar />
+
       <div className="container-custom">
         {/* Hero Section */}
         <div className="text-center mb-16">
@@ -190,6 +192,6 @@ export default function ProductosPage() {
         </div>
       </div>
       <Footer />
-    </div>
+    </div></>
   );
 }
